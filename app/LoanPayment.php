@@ -22,4 +22,8 @@ class LoanPayment extends Model
     public function promise() {
         return $this->belongsTo(Promise::class);
     }
+
+    public function receivedBy() {
+        return $this->belongsTo(Admin::class);
+    }
 }
