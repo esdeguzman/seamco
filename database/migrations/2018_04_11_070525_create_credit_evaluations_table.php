@@ -15,7 +15,18 @@ class CreateCreditEvaluationsTable extends Migration
     {
         Schema::create('credit_evaluations', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->tinyInteger('status')->nullable();
+            $table->string('date_of_last_loan')->nullable();
+            $table->string('date_of_last_payment')->nullable();
+            $table->decimal('balance_of_last_loan', 20, 2)->nullable();
+            $table->string('verified_by')->nullable();
+            $table->string('recommended_for_loan_extension_by')->nullable();
+            $table->string('approved_for_payment_by')->nullable();
+            $table->string('estimated_date_release')->nullable();
+            $table->decimal('approved_amount', 20, 2)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
