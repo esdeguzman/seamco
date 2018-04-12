@@ -18,6 +18,7 @@ class CreateLoanPaymentsTable extends Migration
             $table->unsignedInteger('loan_id');
             $table->unsignedInteger('member_id');
             $table->unsignedInteger('promise_id');
+            $table->unsignedInteger('admin_id');
             $table->softDeletes();
             $table->timestamps();
         });
