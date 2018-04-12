@@ -15,6 +15,14 @@ class CreatePromissoryNotesTable extends Migration
     {
         Schema::create('promissory_notes', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('loan_id');
+            $table->unsignedInteger('member_id');
+            $table->unsignedInteger('credit_evaluation_id');
+            $table->decimal('principal_amount', 20, 2);
+            $table->decimal('interest', 20, 2);
+            $table->tinyInteger('terms');
+            $table->boolean('settled')->default('0');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
