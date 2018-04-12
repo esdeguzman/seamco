@@ -15,6 +15,10 @@ class CreateLoanPaymentsTable extends Migration
     {
         Schema::create('loan_payments', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('loan_id');
+            $table->unsignedInteger('member_id');
+            $table->unsignedInteger('promise_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
