@@ -15,6 +15,10 @@ class CreatePromisesTable extends Migration
     {
         Schema::create('promises', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('promissory_note_id');
+            $table->string('due_date')->nullable();
+            $table->decimal('amount', 20, 2)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
