@@ -45,4 +45,12 @@ class Member extends Authenticatable
     public function creditEvaluations() {
         return $this->hasMany(CreditEvaluation::class);
     }
+
+    public function shares() {
+        return $this->hasMany(Share::class);
+    }
+
+    public function application() {
+        return $this->belongsTo(Application::class);
+    }
 }
