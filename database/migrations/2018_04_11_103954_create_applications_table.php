@@ -15,7 +15,7 @@ class CreateApplicationsTable extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('member_id');
             $table->boolean('approved');
             $table->text('disapproval_reason');
             $table->unsignedInteger('disapproved_by');

@@ -15,7 +15,7 @@ class CreateComakersTable extends Migration
     {
         Schema::create('comakers', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('member_id');
             $table->unsignedInteger('loan_id');
             $table->softDeletes();
             $table->timestamps();

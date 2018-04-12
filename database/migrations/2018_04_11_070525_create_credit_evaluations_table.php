@@ -15,7 +15,7 @@ class CreateCreditEvaluationsTable extends Migration
     {
         Schema::create('credit_evaluations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('member_id');
             $table->tinyInteger('status')->nullable();
             $table->string('date_of_last_loan')->nullable();
             $table->string('date_of_last_payment')->nullable();
