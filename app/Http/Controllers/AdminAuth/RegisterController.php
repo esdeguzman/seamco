@@ -55,6 +55,7 @@ class RegisterController extends Controller
             'contact_number' => 'required',
             'address' => 'required',
             'position' => 'required',
+            'username' => 'required',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -75,6 +76,7 @@ class RegisterController extends Controller
             'contact_number' => $data['contact_number'],
             'address' => $data['address'],
             'position' => $data['position'],
+            'username' => $data['username'],
             'password' => bcrypt($data['password']),
         ]);
 
