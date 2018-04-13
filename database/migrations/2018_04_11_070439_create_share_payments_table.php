@@ -18,6 +18,7 @@ class CreateSharePaymentsTable extends Migration
             $table->unsignedInteger('admin_id');
             $table->unsignedInteger('member_id');
             $table->decimal('amount', 8, 2);
+            $table->string('remarks');
             $table->softDeletes();
             $table->timestamps();
         });
