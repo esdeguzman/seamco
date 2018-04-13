@@ -80,7 +80,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $admin->code = $user->code = 'A' . str_pad($admin->id, 4, '0', STR_PAD_LEFT);
+        $admin->code = $admin->code = 'A' . str_pad($admin->id, 4, '0', STR_PAD_LEFT);
         $admin->save();
 
         return $admin;
