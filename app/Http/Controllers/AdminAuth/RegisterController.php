@@ -67,7 +67,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return Admin::create([
+        $admin = Admin::create([
             'first_name' => $data['first_name'],
             'middle_name' => $data['middle_name'],
             'last_name' => $data['last_name'],
@@ -77,6 +77,11 @@ class RegisterController extends Controller
             'position' => $data['position'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $admin->code = $user->code = 'A' . str_pad($admin->id, 4, '0', STR_PAD_LEFT);
+        $admin->save();
+
+        return $admin;
     }
 
     /**
