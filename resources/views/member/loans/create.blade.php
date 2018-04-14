@@ -140,5 +140,9 @@
 <script src="{{ url('js/jquery.mask.js') }}"></script>
 <script>
     $('.money').mask('#,##0.00', {reverse: true})
+
+    @if(session('error'))
+    alert('{{ session('error') }}')
+    @endif
 </script>
 @stop
