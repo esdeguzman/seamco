@@ -53,8 +53,10 @@
                         <h3>Navigation</h3>
                         <ul class="nav side-menu">
                             <li @yield('my-profile')><a href="{{ route('members.show') }}"><i class="fa fa-user"></i> My Profile </a></li>
-                            <li @yield('apply-for-loan')><a href="{{ route('loans.create', \Illuminate\Support\Facades\Auth::guard('member')->user()->id) }}"><i class="fa fa-credit-card"></i> Apply for Loan </a></li>
-                            <li @yield('loans')><a href="#"><i class="fa fa-money"></i> My Loans </a></li>
+                            @if(\Illuminate\Support\Facades\Auth::guard('member')->user()->application->approved)
+                                <li @yield('apply-for-loan')><a href="{{ route('loans.create', \Illuminate\Support\Facades\Auth::guard('member')->user()->id) }}"><i class="fa fa-credit-card"></i> Apply for Loan </a></li>
+                                <li @yield('loans')><a href="#"><i class="fa fa-money"></i> My Loans </a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>
