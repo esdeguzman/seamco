@@ -31,4 +31,8 @@ class Admin extends Authenticatable
     public function acceptedSharePayments() {
         return $this->hasMany(SharePayment::class);
     }
+
+    public function approvedApplications() {
+        return $this->hasMany(Application::class);
+    }
 }

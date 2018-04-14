@@ -51,6 +51,6 @@ class Member extends Authenticatable
     }
 
     public function application() {
-        return $this->belongsTo(Application::class);
+        return $this->hasOne(Application::class);
     }
 }

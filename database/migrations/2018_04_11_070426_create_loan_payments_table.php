@@ -20,6 +20,7 @@ class CreateLoanPaymentsTable extends Migration
             $table->unsignedInteger('promise_id');
             $table->unsignedInteger('admin_id');
             $table->decimal('amount', 8, 2);
+            $table->decimal('loan_balance', 8, 2);
             $table->string('remarks');
             $table->softDeletes();
             $table->timestamps();

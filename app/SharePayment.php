@@ -16,6 +16,6 @@ class SharePayment extends Model
     }
 
     public function receivedBy() {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 }

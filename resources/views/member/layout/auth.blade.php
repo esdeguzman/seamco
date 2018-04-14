@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert2@7.0.10/dist/sweetalert2.all.js"></script>
 
     <!-- Scripts -->
     <script>
@@ -19,6 +20,7 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-static-top">
@@ -81,5 +83,7 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+
+    @yield('scripts')
 </body>
 </html>

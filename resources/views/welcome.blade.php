@@ -82,6 +82,7 @@
             <div class="links uk-float-left" uk-lightbox><a href="{{ url('img/registration_cert.jpg') }}">Registration Certificate</a></div>
             <a href="{{ url('member/register') }}">Create an Account!</a>
             <a href="{{ url('member/login') }}">I have an Account</a>
+            <a href="{{ url('admin/login') }}">I am an Admin</a>
             <a href="#modal-overflow" uk-toggle>Terms and Conditions</a>
         </div>
     </div>
@@ -110,7 +111,7 @@
 
         <div class="uk-modal-footer uk-text-right">
             <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
-            <a class="uk-button uk-button-primary" href="{{ url('members/register') }}">Continue to registration page</a>
+            <a class="uk-button uk-button-primary" href="{{ url('member/register') }}">Continue to registration page</a>
         </div>
 
     </div>

@@ -9,6 +9,8 @@ class Share extends Model
 {
     use SoftDeletes;
 
+    protected $guarded = [];
+
     public function member() {
         return $this->belongsTo(Member::class);
     }

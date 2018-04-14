@@ -15,8 +15,8 @@ class CreateLoansTable extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('model_id');
-            $table->unsignedInteger('credit_evaluation_id');
+            $table->unsignedInteger('member_id');
+            $table->unsignedInteger('credit_evaluation_id')->nullable();
             $table->tinyInteger('status')->default('0');
             $table->decimal('regular', 20, 2)->default('0.0');
             $table->decimal('short_term', 20, 2)->default('0.0');
