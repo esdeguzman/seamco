@@ -84,7 +84,7 @@ class AdminsController extends Controller
         $sharePayments = SharePayment::where('member_id', $member->id)->get();
 
         // compute total share payments
-        $totalSharePayments = 0;
+        $totalSharePayments = -1000;
         foreach ($sharePayments as $sharePayment) {
             if(is_null($sharePayment->remarks)) {
                 $totalSharePayments += $sharePayment->amount;

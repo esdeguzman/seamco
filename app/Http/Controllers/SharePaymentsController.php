@@ -46,12 +46,15 @@ class SharePaymentsController extends Controller
             }
         }
 
+        $currentBalance -= 1000;
+        $savings -= 1000;
+
         $sharePayment = SharePayment::create([
             'admin_id' => Auth::guard('admin')->user()->id,
             'member_id' => $member->id,
             'amount' => $amount,
-            'share_balance' => $currentBalance,
-            'savings' => $savings,
+            'share_balance' => $currentBalance < -2000 ? 0 : $currentBalance * -1,
+            'savings' => $savings < 0 ? 0 : $savings,
         ]);
 
         return back();

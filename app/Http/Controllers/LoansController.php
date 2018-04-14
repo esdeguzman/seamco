@@ -16,7 +16,7 @@ class LoansController extends Controller
     }
 
     public function create() {
-        $comakers = Member::whereHas('sharePayments')->get();
+        return $comakers = Member::whereHas('sharePayments')->get();
 
         return view('member.loans.create', compact('comakers'));
     }
