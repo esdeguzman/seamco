@@ -14,7 +14,7 @@ class SharesController extends Controller
         $this->middleware('admin', ['except' => 'logout']);
     }
 
-    public function update(Member $member, Request $request) {
+    public function store(Member $member, Request $request) {
         $share = Share::create([
             'member_id' => $member->id,
             'admin_id' => Auth::guard('admin')->user()->id,
