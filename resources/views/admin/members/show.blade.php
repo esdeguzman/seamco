@@ -162,7 +162,7 @@
                                                     <tr>
                                                         <td>{{ number_format($payment->amount, 2) }}</td>
                                                         <td>{{ $payment->receivedBy->first_name }}</td>
-                                                        <td>{{ Carbon\Carbon::parse($payment->created_at)->toFormattedDateString() }}</td>
+                                                        <td>{{ Carbon\Carbon::parse($payment->created_at)->toDayDateTimeString() }}</td>
                                                         <td>{{ number_format($payment->share_balance, 2) }}</td>
                                                         <td>{{ number_format($payment->savings, 2) }}</td>
                                                         <td>
@@ -254,7 +254,7 @@
 
                                         <br />
                                         <h5>Update Share Value</h5>
-                                        <form class="form" action="{{ route('share.update', $member->id) }}" method="post">
+                                        <form class="form" action="{{ route('share.store', $member->id) }}" method="post">
                                             {{ csrf_field() }} {{ method_field('put') }}
                                             <input class="form-control money" type="text" name="max_share" placeholder="Enter new Share Amount"><br/>
                                             <button type="submit" class="btn btn-block btn-success">UPDATE MEMBER'S SHARE VALUE</button>
