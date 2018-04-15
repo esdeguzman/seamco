@@ -16,7 +16,7 @@ class LoansController extends Controller
     }
 
     public function create() {
-        return $comakers = Member::whereHas('sharePayments')->get();
+        $comakers = Member::whereHas('sharePayments')->get();
 
         return view('member.loans.create', compact('comakers'));
     }
@@ -28,6 +28,7 @@ class LoansController extends Controller
             'take_home_pay' => 'required',
             'sss_gsis' => 'required',
             'residence_telephone_number' => 'required',
+            'monthly_income' => 'required',
             'comaker_id' => 'required'
         ]);
 
@@ -41,11 +42,11 @@ class LoansController extends Controller
         $monthly_income = str_replace(',', '', $request->monthly_income);
         $take_home_pay = str_replace(',', '', $request->take_home_pay);
 
-        return $total_amount = $regular + $short_term + $pre_joining + $productive + $special + $appliance + $petty_cash;
+        $total_amount = $regular + $short_term + $pre_joining + $productive + $special + $appliance + $petty_cash;
 
         if ($total_amount == 0.0) {
             $request->session()->flash('error', 'Please apply for atleast one loan type by placing an amount to the right of the selected loan type');
-            return back();
+            return back()->withInput();
         }
 
         $loan = new Loan();
