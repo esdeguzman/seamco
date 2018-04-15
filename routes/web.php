@@ -9,7 +9,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/approved-members', 'AdminsController@approvedMembers')->name('admin.approved-members');
     Route::get('/show-member/{member}', 'AdminsController@showMember')->name('admin.show-member');
     Route::post('/share-payment/{member}', 'SharePaymentsController@store')->name('admin.share-payment.store');
-    Route::put('/update-member-share/{member}', 'SharesController@update')->name('share.update');
+    Route::put('/update-member-share/{member}', 'SharesController@store')->name('share.store');
     Route::get('/update-member-share-payment/{sharePayment}', 'SharePaymentsController@edit')->name('share-payment.edit');
     Route::put('/update-member-share-payment/{sharePayment}', 'SharePaymentsController@update')->name('share-payment.update');
     Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
