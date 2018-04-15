@@ -21,16 +21,15 @@ class SharePaymentsController extends Controller
 
         // get last balance
         $sharePayments = SharePayment::where('member_id', $member->id)->get();
+        $registrationFee = 1000;
         $currentBalance = 0;
         $savings = 0;
-        $lastBalance = $sharePayments->first();
+        $firstPayment = $sharePayments->first();
         $amount = str_replace(',', '', $request->amount);
         $totalSharePayments = $amount;
 
-        if(is_null($lastBalance)) {
-            // make it equal to zero
-            $lastBalance = 0;
-            $currentBalance = $currentShare->value - $amount;
+        if(is_null($firstPayment)) {
+            $currentBalance = $currentShare->value - $totalSharePayments;
         } else {
             foreach ($sharePayments as $sharePayment) {
                 if(is_null($sharePayment->remarks)) {
@@ -39,21 +38,19 @@ class SharePaymentsController extends Controller
             }
 
             $currentBalance = $currentShare->value - $totalSharePayments;
-
-            if($currentBalance < 0) {
-                $savings = $currentBalance * -1;
-                $currentBalance = 0;
-            }
         }
 
-        $currentBalance -= 1000;
-        $savings -= 1000;
+        if($currentBalance < 0) $currentBalance = 0;
+
+        if($totalSharePayments - $registrationFee > $currentShare->value) {
+            $savings = $totalSharePayments - $registrationFee - $currentShare->value;
+        }
 
         $sharePayment = SharePayment::create([
             'admin_id' => Auth::guard('admin')->user()->id,
             'member_id' => $member->id,
             'amount' => $amount,
-            'share_balance' => $currentBalance < -2000 ? 0 : $currentBalance * -1,
+            'share_balance' => $currentBalance,
             'savings' => $savings < 0 ? 0 : $savings,
         ]);
 
