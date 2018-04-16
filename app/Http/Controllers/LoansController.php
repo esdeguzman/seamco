@@ -130,7 +130,7 @@ class LoansController extends Controller
         if($request->has('ch_response')) {
             if($request->ch_response == 'APPROVE') {
                 $creditEvaluation = $loan->creditEvaluation;
-                $creditEvaluation->approved_for_payment_by = 1;
+                $creditEvaluation->approved_for_payment_by = Auth::guard('admin')->user()->id;
                 $creditEvaluation->save();
 
                 $loan->status = 1;
