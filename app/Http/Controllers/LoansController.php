@@ -73,7 +73,7 @@ class LoansController extends Controller
         // create comaker
         // null response: for tracking if it has been answered
         // null status: for approval of comaker request
-        $newComakerRequest = new Comaker([
+        $newComakerRequest = Comaker::create([
             'member_id' => $request->comaker_id,
             'loan_id' => $loan->id,
         ]);
@@ -81,7 +81,7 @@ class LoansController extends Controller
         $comaker = Member::find($newComakerRequest->member_id);
 
         // create credit evaluation
-        $creditEvaluation = new CreditEvaluation([
+        $creditEvaluation = CreditEvaluation::create([
             'member_id' => $member->id
         ]);
 
