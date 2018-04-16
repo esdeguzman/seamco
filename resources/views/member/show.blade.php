@@ -24,6 +24,8 @@
                                         </li>
                                         <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Loan Payments</a>
                                         </li>
+                                        <li role="presentation" class=""><a href="#tab_content3" role="tab" id="comaker-tab" data-toggle="tab" aria-expanded="false">Comaker Requests</a>
+                                        </li>
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
@@ -76,6 +78,42 @@
                                                             <td>{{ $payment->receivedBy->first_name }}</td>
                                                             <td>{{ $payment->created_at }}</td>
                                                             <td><a href="#"><span class="fa fa-eye"> View</span></a></td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="comaker-tab">
+                                            <table id="datatable-responsive" class="table table-striped table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>Requested By</th>
+                                                    <th>Total Loan Amount</th>
+                                                    <th>Requested On</th>
+                                                    <th>Status</th>
+                                                    <th>Loan Details</th>
+                                                </tr>
+                                                </thead>
+
+
+                                                <tbody>
+                                                @if(! is_null($comakerRequests->get()))
+                                                    @foreach($comakerRequests->get() as $comakerRequest)
+                                                        <tr>
+                                                            <td>{{ $comakerRequest->requestedBy->full_name }}</td>
+                                                            <td>P {{ number_format($comakerRequest->loan->total_amount, 2) }}</td>
+                                                            <td>{{ Carbon\Carbon::parse($comakerRequest->created_at)->toFormattedDateString() }}</td>
+                                                            <td>
+                                                                @if(is_null($comakerRequest->status))
+                                                                    <span class="label label-default">No Answer Yet</span>
+                                                                @elseif($comakerRequest->status == 0)
+                                                                    <span class="label label-danger">Denied</span>
+                                                                @elseif($comakerRequest->status == 1)
+                                                                    <span class="label label-success">Approved</span>
+                                                                @endif
+                                                            </td>
+                                                            <td><a href="{{ route('loans.show', $comakerRequest->loan->id) }}"><span class="fa fa-eye"> View</span></a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endif
