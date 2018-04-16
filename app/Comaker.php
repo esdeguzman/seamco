@@ -15,7 +15,11 @@ class Comaker extends Model
         return $this->belongsToMany(Member::class);
     }
 
-    public function loans() {
-        return $this->belongsToMany(Loan::class);
+    public function loan() {
+        return $this->belongsTo(Loan::class, 'loan_id');
+    }
+
+    public function requestedBy() {
+        return $this->belongsTo(Member::class, 'requested_by');
     }
 }
