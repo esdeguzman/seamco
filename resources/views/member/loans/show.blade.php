@@ -204,5 +204,9 @@
 @stop
 
 @section('scripts')
-
+    <script>
+        @if(session('success'))
+            alert('{{ session('success') }}')
+        @endif
+    </script>
 @stop
