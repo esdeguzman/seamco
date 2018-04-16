@@ -2,7 +2,6 @@
 
 Route::get('/', function () {
     return view('welcome');
-//    return view('admin.loans.show');
 });
 
 Route::group(['prefix' => 'admin'], function () {
@@ -48,6 +47,7 @@ Route::group(['prefix' => 'member'], function () {
     Route::get('/profile', 'MembersController@show')->name('members.show');
     Route::get('/loans/apply/{member}', 'LoansController@create')->name('loans.create');
     Route::post('/loans/apply/{member}', 'LoansController@store')->name('loans.store');
+    Route::get('/loans/index', 'LoansController@index')->name('loans.index');
     Route::put('/{member}', 'MembersController@update')->name('members.update');
     Route::put('/change-password/{member}', 'MembersController@changePassword')->name('member.change-password');
 });
