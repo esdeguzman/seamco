@@ -16,7 +16,7 @@ class LoansController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('member', ['except' => 'logout']);
+        $this->middleware('member', ['except' => ['logout', 'update']]);
     }
 
     public function create() {
