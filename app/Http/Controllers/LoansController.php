@@ -73,10 +73,12 @@ class LoansController extends Controller
         // create comaker
         // null response: for tracking if it has been answered
         // null status: for approval of comaker request
-        $comaker = new Comaker([
+        $newComakerRequest = new Comaker([
             'member_id' => $request->comaker_id,
             'loan_id' => $loan->id,
         ]);
+
+        $comaker = Member::find($newComakerRequest->member_id);
 
         // create credit evaluation
         $creditEvaluation = new CreditEvaluation([
@@ -84,6 +86,8 @@ class LoansController extends Controller
         ]);
 
         $request->session()->flash('success', 'You have successfully applied for a loan, we will contact you as soon the decision has been made, or you can always check it in your MY LOANS tab!');
+
+        $comaker->notify(new NewComakerRequest());
 
         return 'success';
     }
