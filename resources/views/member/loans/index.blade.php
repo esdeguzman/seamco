@@ -40,13 +40,25 @@
 
 
                                                 <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>P 1,000,000.00</td>
-                                                    <td>Today</td>
-                                                    <td>Pending</td>
-                                                    <td><a href="#"><span class="fa fa-edit"> View</span></a></td>
-                                                </tr>
+                                                @if($loans->count() > 0)
+                                                    @foreach($loans as $loan)
+                                                    <tr>
+                                                        <td>{{ $loan->id }}</td>
+                                                        <td>P {{ number_format($loan->total_amount, 2) }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($loan->created_by)->toFormattedDateString() }}</td>
+                                                        <td>
+                                                            @if(is_null($loan->status))
+                                                                <span class="label label-warning text-uppercase">pending</span>
+                                                            @elseif($loan->status == 0)
+                                                                <span class="label label-danger text-uppercase">pending</span>
+                                                            @elseif($loan->status == 1)
+                                                                <span class="label label-success text-uppercase">pending</span>
+                                                            @endif
+                                                        </td>
+                                                        <td><a href="{{ route('loans.show', $loan->id) }}"><span class="fa fa-edit"> View</span></a></td>
+                                                    </tr>
+                                                    @endforeach
+                                                @endif
                                                 </tbody>
                                             </table>
                                         </div>
@@ -65,7 +77,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="panel-body">
-                                        <h3 class="green">Esmeraldo B. de Guzman Jr</h3>
+                                        <h3 class="green">{{ title_case($member->full_name) }}</h3>
 
                                         {{--<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>--}}
                                         <br />
@@ -73,26 +85,26 @@
                                         <div class="project_detail">
 
                                             <p class="title">Code</p>
-                                            <p>P0024006</p>
-                                            <p class="title">Current Savings</p>
-                                            <p>P 0</p>
+                                            <p>{{ $member->code }}</p>
+                                            <p class="title">Total Share Payments</p>
+                                            <p>P {{ number_format($totalSharePayments, 2) }}</p>
                                             <p class="title">Share Amount</p>
-                                            <p>P 50,000.00</p>
+                                            <p>P {{ number_format($currentShare->value, 2) }}</p>
+                                            <p class="title">Current Savings</p>
+                                            <p>P {{ number_format($savings, 2) }}</p>
                                             <p class="title">Username</p>
-                                            <p>esme</p>
+                                            <p>{{ $member->username }}</p>
                                             <p class="title">Position</p>
-                                            <p>Programmer</p>
-                                            <p class="title">Email</p>
-                                            <p>deguzman.esmeraldo@gmail.com</p>
-                                            <p class="title">Contact Number</p>
-                                            <p>09182815569</p>
-                                            <p class="title">Address</p>
-                                            <p>Venus neighborhood Sitio Libjo, Brgy. Sto. Niño Parañaque</p>
+                                            <p>{{ $member->position }}</p>
+                                            <p class="title">Mobile Number</p>
+                                            <p>{{ $member->mobile_number }}</p>
+                                            <p class="title">Present Address</p>
+                                            <p>{{ $member->present_address }}</p>
                                         </div>
 
                                         <br />
                                         <h5>Change Password</h5>
-                                        <form class="form" action="#" method="post">
+                                        <form class="form" action="{{ route('member.change-password', \Illuminate\Support\Facades\Auth::guard('member')->user()->id) }}" method="post">
                                             {{ csrf_field() }} {{ method_field('put') }}
                                             <input class="form-control" type="password" placeholder="Old password" name="old_password"><br/>
                                             <input class="form-control" type="password" placeholder="New password" name="password"><br/>
