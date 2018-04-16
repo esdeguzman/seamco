@@ -7,6 +7,8 @@ use App\CreditEvaluation;
 use App\Loan;
 use App\Member;
 use App\Notifications\NewComakerRequest;
+use App\Share;
+use App\SharePayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +29,25 @@ class LoansController extends Controller
         $member = Auth::guard('member')->user();
         $loans = Loan::where('member_id', $member->id)->get();
 
-        return view('member.loans.index', compact('member', 'loans'));
+        // get current max share
+        $currentShare = Share::where('member_id', $member->id)->get()->last();
+
+        // get all share payments
+        $sharePayments = SharePayment::where('member_id', $member->id)->get();
+
+        // compute total share payments
+        $totalSharePayments = -1000;
+        foreach ($sharePayments as $sharePayment) {
+            if(is_null($sharePayment->remarks)) {
+                $totalSharePayments += $sharePayment->amount;
+            }
+        }
+
+        $savings = $currentShare->value - $totalSharePayments;
+
+        $savings < 0 ? $savings = $savings * -1 : $savings = 0;
+
+        return view('member.loans.index', compact('member', 'loans', 'currentShare', 'totalSharePayments', 'savings'));
     }
 
     public function show(Loan $loan) {
