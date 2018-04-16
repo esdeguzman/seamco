@@ -23,6 +23,12 @@ class LoansController extends Controller
         return view('member.loans.create', compact('comakers'));
     }
 
+    public function index() {
+        $member = Auth::guard('member')->user();
+        $loans = Loan::where('member_id', $member->id)->get();
+
+        return view('member.loans.index', compact('member', 'loans'));
+    }
     public function store(Member $member, Request $request) {
         $this->validate($request, [
             'payment_terms' => 'required',
