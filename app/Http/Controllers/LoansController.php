@@ -54,7 +54,8 @@ class LoansController extends Controller
         return view('member.loans.show', compact('loan'));
     }
 
-    public function store(Member $member, Request $request) {
+    public function store(Member $member, Request $request)
+    {
         $this->validate($request, [
             'payment_terms' => 'required',
             'company_contact_number' => 'required',
@@ -123,5 +124,9 @@ class LoansController extends Controller
         $request->session()->flash('success', 'You have successfully applied for a loan, we will contact you as soon the decision has been made, or you can always check it in your MY LOANS tab!');
 
         return back();
+    }
+
+    public function update(Loan $loan) {
+        return $loan;
     }
 }
