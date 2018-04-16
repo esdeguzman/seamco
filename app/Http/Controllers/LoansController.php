@@ -85,6 +85,9 @@ class LoansController extends Controller
             'member_id' => $member->id
         ]);
 
+        $loan->credit_evaluation_id = $creditEvaluation->id;
+        $loan->save();
+
         $request->session()->flash('success', 'You have successfully applied for a loan, we will contact you as soon the decision has been made, or you can always check it in your MY LOANS tab!');
 
         return back();
