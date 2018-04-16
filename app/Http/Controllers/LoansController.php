@@ -73,10 +73,10 @@ class LoansController extends Controller
         // create comaker
         // null response: for tracking if it has been answered
         // null status: for approval of comaker request
-        $comaker = new Comaker();
-        $comaker->user_id = $request->comaker_id;
-        $comaker->loan_id = $loan->id;
-        $comaker->save();
+        $comaker = new Comaker([
+            'member_id' => $request->comaker_id,
+            'loan_id' => $loan->id,
+        ]);
 
         // create credit evaluation
         $creditEvaluation = new CreditEvaluation([
