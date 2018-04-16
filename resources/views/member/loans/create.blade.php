@@ -152,5 +152,9 @@
     @if(session('error'))
     alert('{{ session('error') }}')
     @endif
+
+    @if(session('success'))
+    alert('{{ session('success') }}')
+    @endif
 </script>
 @stop
