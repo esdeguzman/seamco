@@ -7,6 +7,7 @@ use App\CreditEvaluation;
 use App\Loan;
 use App\Member;
 use App\Notifications\NewComakerRequest;
+use App\PromissoryNote;
 use App\Share;
 use App\SharePayment;
 use Illuminate\Http\Request;
@@ -135,6 +136,25 @@ class LoansController extends Controller
 
                 $loan->status = 1;
             }
+        }
+
+        if($request->has('cc_response')) {
+            if($request->cc_response == 'APPROVE') {
+                $creditEvaluation = $loan->creditEvaluation;
+                $creditEvaluation->verified_by = Auth::guard('admin')->user()->id;
+                $creditEvaluation->save();
+            }
+        }
+
+        if(! is_null($request->approved_amount) && ! is_null($request->estimated_date_release) && ! is_null($request->interest)) {
+            $approved_amount = str_replace(',', '', $request->approved_amount);
+            $interest = str_replace(',', '', $request->interest);
+
+            $creditEvaluation = $loan->creditEvaluation;
+            $creditEvaluation->approved_amount = $approved_amount;
+            $creditEvaluation->interest = $interest;
+            $creditEvaluation->estimated_date_release = $request->estimated_date_release;
+            $creditEvaluation->save();
         }
 
         $loan->save();
