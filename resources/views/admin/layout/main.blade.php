@@ -66,12 +66,7 @@
                                     <li @yield('denied-members')><a>Denied</a></li>
                                 </ul>
                             </li>
-                            <li @yield('loans')><a><i class="fa fa-credit-card"></i> Loans <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    <li @yield('approved-loans')><a>Approved</a></li>
-                                    <li @yield('denied-loans')><a>Denied</a></li>
-                                </ul>
-                            </li>
+                            <li @yield('loans')><a href="{{ route('admin.loans-index') }}"><i class="fa fa-credit-card"></i> Loans</a></li>
                         </ul>
                     </div>
                 </div>
