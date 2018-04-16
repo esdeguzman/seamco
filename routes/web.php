@@ -5,6 +5,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'admin'], function () {
+    Route::get('/loans', 'AdminsController@loansIndex')->name('admin.loans-index');
     Route::get('/approved-members', 'AdminsController@approvedMembers')->name('admin.approved-members');
     Route::get('/show-member/{member}', 'AdminsController@showMember')->name('admin.show-member');
     Route::post('/share-payment/{member}', 'SharePaymentsController@store')->name('admin.share-payment.store');
@@ -26,7 +27,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'AdminsController@dashboard')->name('admin.dashboard');
     Route::get('/{admin}', 'AdminsController@show')->name('admin.show');
     Route::get('/review-applicant/{applicant}', 'AdminsController@reviewApplicant')->name('admin.review-applicant');
-    Route::get('/loans', 'AdminsController@loansIndex')->name('admin.loans-index');
     Route::put('/applicant/{applicant}', 'ApplicationsController@update')->name('applications.update');
     Route::put('/{admin}', 'AdminsController@update')->name('admin.update');
     Route::put('/change-password/{admin}', 'AdminsController@changePassword')->name('admin.change-password');
