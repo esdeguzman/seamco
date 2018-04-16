@@ -75,6 +75,21 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
+                    @if($loanApplications->count() > 0)
+                        @foreach($loanApplications as $loanApplication)
+                            <article class="media event">
+                                <a class="pull-left date">
+                                    <p class="month">{{ \Carbon\Carbon::parse($loanApplication->created_at)->format('F') }}</p>
+                                    <p class="day">{{ \Carbon\Carbon::parse($loanApplication->created_at)->day }}</p>
+                                </a>
+                                <div class="media-body">
+                                    <a class="title" href="{{ route('admin.loan-show', $loanApplication->id) }}">{{ $loanApplication->member->full_name }}</a>
+                                    <p>Contact Number: {{ $loanApplication->member->mobile_number }}</p>
+                                    <p>Position: {{ $loanApplication->member->position }}</p>
+                                </div>
+                            </article>
+                        @endforeach
+                    @endif
                     </div>
                 </div>
             </div>
