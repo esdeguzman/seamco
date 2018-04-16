@@ -157,6 +157,14 @@ class LoansController extends Controller
             $creditEvaluation->save();
         }
 
+        if($request->has('gm_response')) {
+            if($request->gm_response == 'APPROVE') {
+                $creditEvaluation = $loan->creditEvaluation;
+                $creditEvaluation->recommended_for_loan_extension_by = Auth::guard('admin')->user()->id;
+                $creditEvaluation->save();
+            }
+        }
+
         $loan->save();
 
         return back();
