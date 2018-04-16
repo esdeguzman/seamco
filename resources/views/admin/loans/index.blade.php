@@ -21,9 +21,8 @@
                             <tr>
                                 <th>Member Name</th>
                                 <th>Member Code</th>
-                                <th>Contact Number</th>
-                                <th>Email Address</th>
-                                <th>Approved Amount</th>
+                                <th>Mobile Number</th>
+                                <th>Requested Amount</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -31,17 +30,28 @@
 
 
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>deguzman.esmeraldo@gmail.com</td>
-                                <td>Edinburgh</td>
-                                <td>P 5000,000.00</td>
-                                <td><label class="label label-success">Paid</label></td>
-                                <td>
-                                    <a href="#"><span class="fa fa-eye"></span> View</a>
-                                </td>
-                            </tr>
+                            @if(! is_null($loans))
+                                @foreach($loans as $loan)
+                                <tr>
+                                    <td>{{ $loan->member->full_name }}</td>
+                                    <td>{{ $loan->member->code }}</td>
+                                    <td>{{ $loan->member->mobile_number }}</td>
+                                    <td>P {{ number_format($loan->total_amount, 2) }}</td>
+                                    <td>
+                                        @if(is_null($loan->status))
+                                            <label class="label label-warning text-uppercase">pending</label>
+                                        @elseif($loan->status == 1)
+                                            <label class="label label-success text-uppercase">approved</label>
+                                        @elseif($loan->status == 0)
+                                            <label class="label label-danger text-uppercase">denied</label>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.loan-show', $loan->id) }}"><span class="fa fa-eye"></span> View</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
