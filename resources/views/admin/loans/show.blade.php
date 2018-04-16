@@ -16,7 +16,7 @@
                                     <div class="col-xs-12 invoice-header">
                                         <h1>
                                             <i class="fa fa-credit-card"></i> Loan Details
-                                            <small class="pull-right">Date Requested: 16/08/2016</small>
+                                            <small class="pull-right">Date Requested: {{ Carbon\Carbon::parse($loan->created_at)->toFormattedDateString() }}</small>
                                         </h1>
                                     </div>
                                     <!-- /.col -->
@@ -37,25 +37,32 @@
                                     <div class="col-sm-4 invoice-col">
                                         To
                                         <address>
-                                            <strong>John Doe</strong>
-                                            <br>795 Freedom Ave, Suite 600
-                                            <br>New York, CA 94107
-                                            <br>Phone: 1 (804) 123-9876
-                                            <br>Email: jon@ironadmin.com
+                                            <strong>{{ strtoupper($loan->member->full_name) }}</strong>
+                                            <br>{{ $loan->member->present_address }}
+                                            <br>Contact no: {{ $loan->member->mobile_number }}
+                                            <br>Position: {{ strtoupper($loan->member->position) }}
                                         </address>
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-sm-4 invoice-col">
-                                        <b>Payment Terms:</b> 12 months
+                                        <b>Payment Terms:</b> {{ $loan->payment_terms }} months
                                         <br>
-                                        <b>Comaker:</b> Mr. Estrella
+                                        <b>Comaker:</b>
+                                        @if($loan->comaker->status == 0 && ! is_null($loan->comaker->status))
+                                            <span class="label label-danger">COMAKER REQUEST HAS BEEN DENIED</span>
+                                        @elseif($loan->comaker->status == 1)
+                                            {{ strtoupper($loan->comaker->member->full_name) }}
+                                        @elseif(is_null($loan->comaker->status))
+                                            <span class="label label-warning">NOT YET ANSWERED</span>
+                                        @endif
                                         <br>
+                                        <b>Requested Amount</b> P {{ number_format($loan->total_amount, 2) }}
                                         <br>
-                                        <b>Approved Amount:</b> P 500,000.00
+                                        <b>Approved Amount:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_amount)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount, 2) !!}
                                         <br>
-                                        <b>Interest:</b> P 20,000.00
+                                        <b>Interest:</b> {!! is_null($loan->promissoryNote) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->interest, 2) !!}
                                         <br>
-                                        <b>Payment Due:</b> 2/22/2014
+                                        <b>Payment Due:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -71,17 +78,29 @@
                                                 <th>Amount</th>
                                                 <th>Payment Accepted By</th>
                                                 <th>Status</th>
-                                                <th>Subtotal</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>March 31, 2018</td>
-                                                <td>P 500,000.00</td>
-                                                <td>Admin 1</td>
-                                                <td><span class="label label-warning">Not yet paid</span></td>
-                                                <td>P 500,000.00</td>
-                                            </tr>
+                                            @if(is_null($loan->promissoryNote))
+                                                <tr>
+                                                    <td colspan="5" align="center">No Promises Retrieved</td>
+                                                </tr>
+                                            @else
+                                                @foreach($loan->promisorryNote->promises as $promise)
+                                                    <tr>
+                                                        <td>{{ \Carbon\Carbon::parse($promise->due_date)->toFormattedDateString() }}</td>
+                                                        <td>P {{ number_format($promise->amount, 2) }}</td>
+                                                        <td>{{ $promise->payment->receivedBy->first_name }}</td>
+                                                        <td>
+                                                            @if($promise->payment->status == 0)
+                                                                <span class="label label-warning text-uppercase">not yet paid</span>
+                                                            @elseif($promise->payment->status == 1)
+                                                                <span class="label label-success text-uppercase">paid</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -98,54 +117,70 @@
                                         {{--<img src="images/american-express.png" alt="American Express">--}}
                                         {{--<img src="images/paypal.png" alt="Paypal">--}}
                                         {{--<p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">--}}
-                                            {{--Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.--}}
+                                        {{--Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.--}}
                                         {{--</p>--}}
                                         <table>
                                             <th style="width: 60%">
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Company Contact Number:</p>
-                                                    <p>456-5684</p>
+                                                    <p>{{ $loan->company_contact_number }}</p>
                                                     <p class="title text-primary">Monthly Income:</p>
-                                                    <p>P 25,000.00</p>
+                                                    <p>P {{ number_format($loan->monthly_income, 2) }}</p>
                                                     <p class="title text-primary">Take Home Pay:</p>
-                                                    <p>P 25,000.00</p>
+                                                    <p>P {{ number_format($loan->take_home_pay, 2) }}</p>
                                                     <p class="title text-primary">SSS / GSIS:</p>
-                                                    <p>123-456-789-101</p>
+                                                    <p>{{ $loan->sss_gsis }}</p>
                                                     <p class="title text-primary">Residence Tel. No:</p>
-                                                    <p>864-5231</p>
+                                                    <p>{{ $loan->residence_telephone_number }}</p>
                                                 </div>
                                             </th>
                                             <td>
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Approved By</p>
-                                                    <p>Credit Commitee</p>
+                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->verified_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->verified_by !!}</p>
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
-                                                    <p>General Manager</p>
+                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->recommended_for_loan_extension_by !!}</p>
                                                     <p class="title text-primary">Approved For Payment By</p>
-                                                    <p>Chairman of the Board</p>
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'ch_lloyd' && (is_null($loan->creditEvaluation) || ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)))
+                                                    <form action="{{ route('loans.update', $loan->id) }}" method="post">
+                                                        {{ csrf_field() }} {{ method_field('put') }}
+                                                        <input type="submit" value="APPROVE" name="ch_response" class="btn btn-primary form-control" />
+                                                        <input type="submit" value="DISAPPROVE" name="ch_response" class="btn btn-danger form-control" />
+                                                    </form>
+                                                    @else
+                                                        <span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </table>
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-xs-6">
-                                        <p class="lead">Amount Due 2/22/2014
-                                            <span class="label label-success pull-right">PAID</span>
+                                        <p class="lead">Amount Due {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
+                                            @if(! is_null($loan->remarks))
+                                                <span class="label label-danger pull-right">Denied</span>
+                                            @elseif(is_null($loan->promissoryNote))
+                                                <span class="label label-warning pull-right">NOT YET APPROVED</span>
+                                            @elseif(is_null($loan->promissoryNote->settled))
+                                                <span class="label label-danger pull-right">NOT YET PAID</span>
+                                            @elseif($loan->promissoryNote->settled)
+                                                <span class="label label-success pull-right">PAID</span>
+                                            @endif
                                         </p>
                                         <div class="table-responsive">
                                             <table class="table">
                                                 <tbody>
                                                 <tr>
                                                     <th style="width:50%">Subtotal:</th>
-                                                    <td>$250.30</td>
+                                                    <td>{{ is_null($loan->promissory) ? 'No Promises Retrieved' : 'P ' }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Interest</th>
-                                                    <td>$10.34</td>
+                                                    <td>{!! is_null($loan->promissoryNote) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P '  .number_format($loan->creditEvaluation->interest, 2) !!}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Total:</th>
-                                                    <td>$265.24</td>
+                                                    <td>{{ is_null($loan->promissory) ? 'No Promises Retrieved' : 'P ' }}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -156,13 +191,19 @@
                                 <!-- /.row -->
 
                                 <!-- this row will not appear when printing -->
-                                <div class="row no-print">
-                                    <div class="col-xs-12">
-                                        <button class="btn btn-primary"><i class="fa fa-eye"></i> View Member's Profile</button>
+                                {{--<div class="row no-print">--}}
+                                    {{--<div class="col-xs-12">--}}
+                                        {{--@if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id && is_null($loan->comaker->status))--}}
+                                            {{--<form action="{{ route('comaker.update', $loan->comaker->id) }}" method="post">--}}
+                                                {{--{{ csrf_field() }} {{ method_field('put') }}--}}
+                                                {{--<input class="btn btn-primary pull-right col-md-3" value="APPROVED COMAKER REQUEST" name="response" type="submit"/>--}}
+                                                {{--<input class="btn btn-danger pull-right col-md-3" value="DENY COMAKER REQUEST" name="response" type="submit"/>--}}
+                                            {{--</form>--}}
+                                        {{--@endif--}}
                                         {{--<button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>--}}
                                         {{--<button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>--}}
-                                    </div>
-                                </div>
+                                    {{--</div>--}}
+                                {{--</div>--}}
                             </section>
                         </div>
                     </div>
@@ -173,5 +214,9 @@
 @stop
 
 @section('scripts')
-
+    <script>
+        @if(session('success'))
+        alert('{{ session('success') }}')
+        @endif
+    </script>
 @stop
