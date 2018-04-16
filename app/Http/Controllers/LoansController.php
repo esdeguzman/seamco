@@ -106,6 +106,7 @@ class LoansController extends Controller
         // null status: for approval of comaker request
         $newComakerRequest = Comaker::create([
             'member_id' => $request->comaker_id,
+            'requested_by' => Auth::guard('member')->user()->id,
             'loan_id' => $loan->id,
         ]);
 
