@@ -48,21 +48,21 @@
                                         <b>Payment Terms:</b> {{ $loan->payment_terms }} months
                                         <br>
                                         <b>Comaker:</b>
-                                        @if((is_null($loan->comaker->status)))
-                                        <span class="label label-warning">NOT YET ANSWERED</span>
+                                        @if($loan->comaker->status == 0 && ! is_null($loan->comaker->status))
+                                            <span class="label label-danger">COMAKER REQUEST HAS BEEN DENIED</span>
                                         @elseif($loan->comaker->status == 1)
-                                        {{ strtoupper($loan->comaker->member->full_name) }}
-                                        @elseif($loan->comaker->status == 0)
-                                        <span class="label label-danger">DENIED</span>
+                                            {{ strtoupper($loan->comaker->member->full_name) }}
+                                        @elseif(is_null($loan->comaker->status))
+                                        <span class="label label-warning">NOT YET ANSWERED</span>
                                         @endif
                                         <br>
                                         <b>Requested Amount</b> P {{ number_format($loan->total_amount, 2) }}
                                         <br>
-                                        <b>Approved Amount:</b> {!! is_null($loan->creditEvaluation->approved_amount) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount, 2) !!}
+                                        <b>Approved Amount:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_amount)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount, 2) !!}
                                         <br>
                                         <b>Interest:</b> {!! is_null($loan->promissoryNote) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->interest, 2) !!}
                                         <br>
-                                        <b>Payment Due:</b> {!! is_null($loan->creditEvaluation->estimated_date_release) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
+                                        <b>Payment Due:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -137,19 +137,21 @@
                                             <td>
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Approved By</p>
-                                                    <p>{!! is_null($loan->creditEvaluation->verified_by) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->verified_by !!}</p>
+                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->verified_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->verified_by !!}</p>
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
-                                                    <p>{!! is_null($loan->creditEvaluation->recommended_for_loan_extension_by) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->recommended_for_loan_extension_by !!}</p>
+                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->recommended_for_loan_extension_by !!}</p>
                                                     <p class="title text-primary">Approved For Payment By</p>
-                                                    <p>{!! is_null($loan->creditEvaluation->approved_for_payment_by) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->approved_for_payment_by !!}</p>
+                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_for_payment_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->approved_for_payment_by !!}</p>
                                                 </div>
                                             </td>
                                         </table>
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-xs-6">
-                                        <p class="lead">Amount Due {!! is_null($loan->creditEvaluation->estimated_date_release) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
-                                            @if(is_null($loan->promissoryNote))
+                                        <p class="lead">Amount Due {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
+                                            @if(! is_null($loan->remarks))
+                                                <span class="label label-danger pull-right">Denied</span>
+                                            @elseif(is_null($loan->promissoryNote))
                                                 <span class="label label-warning pull-right">NOT YET APPROVED</span>
                                             @elseif(is_null($loan->promissoryNote->settled))
                                                 <span class="label label-danger pull-right">NOT YET PAID</span>
