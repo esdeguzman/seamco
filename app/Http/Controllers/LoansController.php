@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Comaker;
+use App\CreditEvaluation;
 use App\Loan;
 use App\Member;
+use App\Notifications\NewComakerRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -75,6 +77,11 @@ class LoansController extends Controller
         $comaker->user_id = $request->comaker_id;
         $comaker->loan_id = $loan->id;
         $comaker->save();
+
+        // create credit evaluation
+        $creditEvaluation = new CreditEvaluation([
+            'member_id' => $member->id
+        ]);
 
         $request->session()->flash('success', 'You have successfully applied for a loan, we will contact you as soon the decision has been made, or you can always check it in your MY LOANS tab!');
 
