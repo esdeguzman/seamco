@@ -11,8 +11,8 @@ class Comaker extends Model
 
     protected $guarded = [];
 
-    public function members() {
-        return $this->belongsToMany(Member::class);
+    public function member() {
+        return $this->belongsTo(Member::class);
     }
 
     public function loan() {
