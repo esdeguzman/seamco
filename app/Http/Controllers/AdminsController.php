@@ -103,4 +103,8 @@ class AdminsController extends Controller
 
         return view('admin.loans.index', compact('loans'));
     }
+
+    public function showLoan(Loan $loan) {
+        return view('admin.loans.show', compact('loan'));
+    }
 }
