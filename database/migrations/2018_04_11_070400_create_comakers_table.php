@@ -17,6 +17,7 @@ class CreateComakersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('member_id');
             $table->unsignedInteger('loan_id');
+            $table->boolean('status')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
