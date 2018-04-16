@@ -97,4 +97,10 @@ class AdminsController extends Controller
 
         return view('admin.members.show', compact('member', 'savings', 'totalSharePayments'));
     }
+
+    public function loansIndex() {
+        $loans = Loan::all();
+
+        return view('admin.loans.index', compact('loans'));
+    }
 }
