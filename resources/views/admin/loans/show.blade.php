@@ -60,7 +60,7 @@
                                         <br>
                                         <b>Approved Amount:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_amount)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount, 2) !!}
                                         <br>
-                                        <b>Interest:</b> {!! is_null($loan->promissoryNote) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->interest, 2) !!}
+                                        <b>Interest:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->interest, 2) !!}
                                         <br>
                                         <b>Payment Due:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
                                     </div>
@@ -156,21 +156,34 @@
                                                             <input type="text" name="estimated_date_release" class="form-control date" /><br>
                                                             <button type="submit" class="btn btn-primary text-uppercase btn-block">approved amount</button>
                                                         </form>
-                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation->approved_amount)))
+                                                    @elseif(! is_null($loan->creditEvaluation->approved_amount))
                                                         <p><span class="label label-success">CREDIT COMMITTEE</span></p>
                                                     @else
                                                         <p><span class="label label-warning">NOT YET APPROVED</span></p>
                                                     @endif
-
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
-                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->recommended_for_loan_extension_by !!}</p>
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'gm_rico' && ((! is_null($loan->creditEvaluation)) && (is_null($loan->creditEvaluation->approved_amount))))
+                                                        <form action="{{ route('loans.update', $loan->id) }}" method="post">
+                                                            {{ csrf_field() }} {{ method_field('put') }}
+                                                            <input type="submit" value="APPROVE" name="gm_response" class="btn btn-primary form-control" />
+                                                            <input type="submit" value="DISAPPROVE" name="gm_response" class="btn btn-danger form-control" />
+                                                        </form>
+                                                    @elseif(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
+                                                        <p><span class="label label-success">GENERAL MANAGER</span></p>
+                                                    @else
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
+                                                    @endif
                                                     <p class="title text-primary">Approved For Payment By</p>
-                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'ch_lloyd' && (! is_null($loan->creditEvaluation) || ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)))
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'ch_lloyd' && (! is_null($loan->creditEvaluation) && ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) && is_null($loan->creditEvaluation->approved_for_payment_by))
                                                     <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                         {{ csrf_field() }} {{ method_field('put') }}
                                                         <input type="submit" value="APPROVE" name="ch_response" class="btn btn-primary form-control" />
                                                         <input type="submit" value="DISAPPROVE" name="ch_response" class="btn btn-danger form-control" />
                                                     </form>
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username != 'ch_lloyd' && (! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)))
+                                                        <p><span class="label label-primary">WAITING FOR CHAIRMAN OF THE BOARD'S RESPONSE</span></p>
+                                                    @elseif(! is_null($loan->creditEvaluation->approved_for_payment_by))
+                                                        <p><span class="label label-success">CHAIRMAN OF THE BOARD</span></p>
                                                     @else
                                                         <p><span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span></p>
                                                     @endif
@@ -200,7 +213,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Interest</th>
-                                                    <td>{!! is_null($loan->promissoryNote) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P '  .number_format($loan->creditEvaluation->interest, 2) !!}</td>
+                                                    <td>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P '  .number_format($loan->creditEvaluation->interest, 2) !!}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Total:</th>
