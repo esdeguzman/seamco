@@ -55,7 +55,7 @@
                             <li @yield('my-profile')><a href="{{ route('members.show') }}"><i class="fa fa-user"></i> My Profile </a></li>
                             @if(\Illuminate\Support\Facades\Auth::guard('member')->user()->application->approved)
                                 <li @yield('apply-for-loan')><a href="{{ route('loans.create', \Illuminate\Support\Facades\Auth::guard('member')->user()->id) }}"><i class="fa fa-credit-card"></i> Apply for Loan </a></li>
-                                <li @yield('loans')><a href="#"><i class="fa fa-money"></i> My Loans </a></li>
+                                <li @yield('loans')><a href="{{ route('loans.index') }}"><i class="fa fa-money"></i> My Loans </a></li>
                             @endif
                         </ul>
                     </div>
@@ -101,6 +101,47 @@
                                     <a onclick="logout()"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                                     <form id="logout" action="{{ url('/member/logout') }}" method="post">{{ csrf_field() }}</form>
                                 </li>
+                            </ul>
+                        </li>
+
+                        <li role="presentation" class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-envelope-o"></i>
+                                <span class="badge bg-green">
+                                    @if($comakerRequests->where('status', null)->count() > 0)
+                                    {{ $comakerRequests->where('status', null)->count() }}
+                                    @else
+                                    0
+                                    @endif
+                                </span>
+                            </a>
+                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                @if($comakerRequests->where('status', null)->count() > 0)
+                                @foreach($comakerRequests->where('status', null)->get() as $comakerRequest)
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="{{ url('/storage') .'/'. $comakerRequest->requestedBy->photo_url }}" alt="Profile Image" /></span>
+                                                        <span>
+                                                <span>{{ $comakerRequest->requestedBy->full_name }}</span>
+                                                <span class="time">{{ \Carbon\Carbon::parse($comakerRequest->created_at)->diffForHumans() }}</span>
+                                            </span>
+                                            <span class="message">
+                                                Total Loan Amount : {{ $comakerRequest->loan->total_amount }}
+                                                to be paid for {{ $comakerRequest->loan->payment_terms }} months
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                                @endif
+                                {{--<li>--}}
+                                    {{--<div class="text-center">--}}
+                                        {{--<a>--}}
+                                            {{--<strong>See All Alerts</strong>--}}
+                                            {{--<i class="fa fa-angle-right"></i>--}}
+                                        {{--</a>--}}
+                                    {{--</div>--}}
+                                {{--</li>--}}
                             </ul>
                         </li>
                     </ul>
