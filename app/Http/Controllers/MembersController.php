@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comaker;
 use App\Member;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
