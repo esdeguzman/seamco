@@ -137,18 +137,42 @@
                                             <td>
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Approved By</p>
-                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->verified_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->verified_by !!}</p>
+
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation) && is_null($loan->creditEvaluation->verified_by)))
+                                                        <form action="{{ route('loans.update', $loan->id) }}" method="post">
+                                                            {{ csrf_field() }} {{ method_field('put') }}
+                                                            <input type="submit" value="APPROVE" name="cc_response" class="btn btn-primary form-control" />
+                                                            <input type="submit" value="DISAPPROVE" name="cc_response" class="btn btn-danger form-control" />
+                                                        </form>
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (is_null($loan->creditEvaluation->approved_amount)))
+                                                        <br>
+                                                        <form action="{{ route('loans.update', $loan->id) }}" method="post">
+                                                            {{ csrf_field() }} {{ method_field('put') }}
+                                                            <label for="approved_amount">Approved Amount</label>
+                                                            <input type="text" name="approved_amount" class="form-control money" /><br>
+                                                            <label for="interest">Interest</label>
+                                                            <input type="text" name="interest" class="form-control money" /><br>
+                                                            <label for="estimated_date_release">Estimated Date of Release</label>
+                                                            <input type="text" name="estimated_date_release" class="form-control date" /><br>
+                                                            <button type="submit" class="btn btn-primary text-uppercase btn-block">approved amount</button>
+                                                        </form>
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation->approved_amount)))
+                                                        <p><span class="label label-success">CREDIT COMMITTEE</span></p>
+                                                    @else
+                                                        <p><span class="label label-warning">NOT YET APPROVED</span></p>
+                                                    @endif
+
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
                                                     <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->recommended_for_loan_extension_by !!}</p>
                                                     <p class="title text-primary">Approved For Payment By</p>
-                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'ch_lloyd' && (is_null($loan->creditEvaluation) || ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)))
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'ch_lloyd' && (! is_null($loan->creditEvaluation) || ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)))
                                                     <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                         {{ csrf_field() }} {{ method_field('put') }}
                                                         <input type="submit" value="APPROVE" name="ch_response" class="btn btn-primary form-control" />
                                                         <input type="submit" value="DISAPPROVE" name="ch_response" class="btn btn-danger form-control" />
                                                     </form>
                                                     @else
-                                                        <span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span>
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span></p>
                                                     @endif
                                                 </div>
                                             </td>
@@ -214,9 +238,15 @@
 @stop
 
 @section('scripts')
+    <!-- Masked Input -->
+    <script src="{{ url('js/jquery.mask.js') }}"></script>
+
     <script>
         @if(session('success'))
         alert('{{ session('success') }}')
         @endif
+
+        $('.money').mask('#,##0.00', {reverse: true})
+        $('.date').mask('00/00/0000', {placeholder: "MM/DD/YYYY"})
     </script>
 @stop
