@@ -27,7 +27,7 @@ class AdminsController extends Controller
                     ->orWhere('id_has_been_released', null)
                     ->orWhere('share_cert_given', null);
         })->get();
-        $loanApplications = Loan::where('status', '!=', 0)->get();
+        $loanApplications = Loan::where('status',null)->get();
         $admins = Admin::all();
 
         return view('admin.dashboard', compact('members', 'applicants', 'loanApplications', 'admins'));
