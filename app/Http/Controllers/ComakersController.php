@@ -24,6 +24,7 @@ class ComakersController extends Controller
             $comaker->loan->creditEvaluation->delete();
             $loan = $comaker->loan;
             $loan->status = 0;
+            $loan->remarks = "Comaker request has been denied by {$comaker->member->full_name}!";
             $loan->save();
 
             $request->session()->flash('success', 'You have successfully denied this loan\'s comaker request!, loan request has been closed!');
