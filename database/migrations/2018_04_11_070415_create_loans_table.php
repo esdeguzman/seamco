@@ -32,6 +32,7 @@ class CreateLoansTable extends Migration
             $table->string('sss_gsis');
             $table->string('residence_telephone_number');
             $table->unsignedInteger('total_amount');
+            $table->string('remarks');
             $table->softDeletes();
             $table->timestamps();
         });
