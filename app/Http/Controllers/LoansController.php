@@ -126,7 +126,19 @@ class LoansController extends Controller
         return back();
     }
 
-    public function update(Loan $loan) {
-        return $loan;
+    public function update(Loan $loan, Request $request) {
+        if($request->has('ch_response')) {
+            if($request->ch_response == 'APPROVE') {
+                $creditEvaluation = $loan->creditEvaluation;
+                $creditEvaluation->approved_for_payment_by = 1;
+                $creditEvaluation->save();
+
+                $loan->status = 1;
+            }
+        }
+
+        $loan->save();
+
+        return back();
     }
 }
