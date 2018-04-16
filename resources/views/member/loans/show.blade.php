@@ -48,11 +48,11 @@
                                         <b>Payment Terms:</b> {{ $loan->payment_terms }} months
                                         <br>
                                         <b>Comaker:</b>
-                                        @if(is_null($comaker->status))
+                                        @if((is_null($loan->comaker->status)))
                                         <span class="label label-warning">NOT YET ANSWERED</span>
-                                        @elseif($comaker->status == 1)
-                                        {{ strtoupper($comaker->full_name) }}
-                                        @elseif($comaker->status == 0)
+                                        @elseif($loan->comaker->status == 1)
+                                        {{ strtoupper($loan->comaker->member->full_name) }}
+                                        @elseif($loan->comaker->status == 0)
                                         <span class="label label-danger">DENIED</span>
                                         @endif
                                         <br>
