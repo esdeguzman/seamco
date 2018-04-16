@@ -184,7 +184,7 @@
                                 <div class="row no-print">
                                     <div class="col-xs-12">
                                         @if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id)
-                                            <form action="{{ route('comaker.update') }}" method="post">
+                                            <form action="{{ route('comaker.update', $loan->comaker->member_id) }}" method="post">
                                                 {{ csrf_field() }} {{ method_field('put') }}
                                                  <input class="btn btn-primary pull-right col-md-3" value="APPROVED COMAKER REQUEST" name="response"/>
                                                 <input class="btn btn-danger pull-right col-md-3" value="DENY COMAKER REQUEST" name="response"/>
