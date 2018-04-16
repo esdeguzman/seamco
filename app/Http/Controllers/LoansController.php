@@ -87,8 +87,6 @@ class LoansController extends Controller
 
         $request->session()->flash('success', 'You have successfully applied for a loan, we will contact you as soon the decision has been made, or you can always check it in your MY LOANS tab!');
 
-        $comaker->notify(new NewComakerRequest());
-
-        return 'success';
+        return back();
     }
 }
