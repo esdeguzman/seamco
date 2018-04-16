@@ -49,6 +49,7 @@ Route::group(['prefix' => 'member'], function () {
     Route::post('/loans/apply/{member}', 'LoansController@store')->name('loans.store');
     Route::get('/loans/index', 'LoansController@index')->name('loans.index');
     Route::get('/loans/{loan}', 'LoansController@show')->name('loans.show');
+    Route::put('/comaker/{comaker}', 'ComakersController@update')->name('comaker.update');
     Route::put('/{member}', 'MembersController@update')->name('members.update');
     Route::put('/change-password/{member}', 'MembersController@changePassword')->name('member.change-password');
 });
