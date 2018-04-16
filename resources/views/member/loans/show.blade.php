@@ -184,8 +184,11 @@
                                 <div class="row no-print">
                                     <div class="col-xs-12">
                                         @if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id)
-                                            <button class="btn btn-primary pull-right"><i class="fa fa-thumbs-up"></i> APPROVED COMAKER REQUEST</button>
-                                            <button class="btn btn-danger pull-right"><i class="fa fa-thumbs-down"></i> DENY COMAKER REQUEST</button>
+                                            <form action="{{ route('comaker.update') }}" method="post">
+                                                {{ csrf_field() }} {{ method_field('put') }}
+                                                 <input class="btn btn-primary pull-right col-md-3" value="APPROVED COMAKER REQUEST" name="response"/>
+                                                <input class="btn btn-danger pull-right col-md-3" value="DENY COMAKER REQUEST" name="response"/>
+                                            </form>
                                         @endif
                                         {{--<button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>--}}
                                         {{--<button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>--}}
