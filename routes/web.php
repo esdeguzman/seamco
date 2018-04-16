@@ -6,6 +6,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/loans', 'AdminsController@loansIndex')->name('admin.loans-index');
+    Route::get('/loans/{loan}', 'AdminsController@showLoan')->name('admin.loan-show');
     Route::get('/approved-members', 'AdminsController@approvedMembers')->name('admin.approved-members');
     Route::get('/show-member/{member}', 'AdminsController@showMember')->name('admin.show-member');
     Route::post('/share-payment/{member}', 'SharePaymentsController@store')->name('admin.share-payment.store');
