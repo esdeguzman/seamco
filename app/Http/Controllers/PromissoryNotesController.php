@@ -16,6 +16,8 @@ class PromissoryNotesController extends Controller
     public function create(Loan $loan) {
         if(is_null($loan->promissoryNote)) $promissoryNote = $this->store($loan);
 
+        $promissoryNote = $loan->promissoryNote;
+
         return view('member.promises.create', compact('promissoryNote'));
     }
 
