@@ -209,24 +209,6 @@
                                                 <span class="label label-success pull-right">PAID</span>
                                             @endif
                                         </p>
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <tbody>
-                                                <tr>
-                                                    <th style="width:50%">Subtotal:</th>
-                                                    <td>{{ is_null($loan->promissory) ? 'No Promises Retrieved' : 'P ' }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Interest</th>
-                                                    <td>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P '  .number_format($loan->creditEvaluation->interest, 2) !!}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total:</th>
-                                                    <td>{{ is_null($loan->promissory) ? 'No Promises Retrieved' : 'P ' }}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                     <!-- /.col -->
                                 </div>
