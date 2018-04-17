@@ -179,6 +179,38 @@
                                             </table>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                            @if($latestPromise)
+                                                <form class="form-horizontal form-label-left" action="{{ route('loan-payments.store', [$currentLoan->id, $latestPromise->id]) }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="amount"></label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <label>Due Date : {{ \Carbon\Carbon::parse($latestPromise->due_date)->toFormattedDateString() }}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="amount"></label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <label>Amount Due : P {{ number_format($latestPromise->amount, 2) }}</label>
+                                                            <input class="money" type="text" name="amount_due" value="{{ $latestPromise->amount }}" hidden />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="amount"></label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <input type="text" id="amount" class="form-control col-md-7 col-xs-12 money" name="paid_amount" placeholder="Enter member payment here" /> <br/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="amount"></label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <button class="btn btn-block btn-primary">RECEIVE MEMBER LOAN PAYMENT</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ln_solid"></div>
+                                                </form>
+                                            @endif
+
                                             <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                                 <thead>
                                                 <tr>
@@ -203,7 +235,7 @@
                                                             <td>{{ $payment->receivedBy->first_name }}</td>
                                                             <td>{{ Carbon\Carbon::parse($payment->created_at)->toFormattedDateString() }}</td>
                                                             <td><a href="#"><span class="fa fa-comment"> Add Remarks</span></a></td>
-                                                            <td><a href="#"><span class="fa fa-view"> View</span></a></td>
+                                                            <td><a href="{{ route('admin.loan-show', $payment->loan_id) }}"><span class="fa fa-view"> View</span></a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endif
