@@ -56,5 +56,5 @@ Route::group(['prefix' => 'member'], function () {
     Route::put('/{member}', 'MembersController@update')->name('members.update');
     Route::put('/change-password/{member}', 'MembersController@changePassword')->name('member.change-password');
 
-    Route::get('/promissory-note/create', 'PromissoryNotesController@create')->name('promissory-note.create');
+    Route::get('/promissory-note/create/{loan}', 'PromissoryNotesController@create')->name('promissory-note.create');
 });
