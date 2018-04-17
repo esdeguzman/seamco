@@ -24,6 +24,6 @@ class LoanPayment extends Model
     }
 
     public function receivedBy() {
-        return $this->belongsTo(Admin::class, 'received_by');
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 }
