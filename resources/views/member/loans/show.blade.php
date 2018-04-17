@@ -137,11 +137,25 @@
                                             <td>
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Approved By</p>
-                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->verified_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->verified_by !!}</p>
+                                                    @if(! is_null($loan->creditEvaluation->approved_amount))
+                                                        <p><span class="label label-success">CREDIT COMMITTEE</span></p>
+                                                    @else
+                                                        <p><span class="label label-warning">NOT YET APPROVED</span></p>
+                                                    @endif
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
-                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->recommended_for_loan_extension_by !!}</p>
+                                                    @if(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
+                                                        <p><span class="label label-success">GENERAL MANAGER</span></p>
+                                                    @else
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
+                                                    @endif
                                                     <p class="title text-primary">Approved For Payment By</p>
-                                                    <p>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_for_payment_by)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : $loan->creditEvaluation->approved_for_payment_by !!}</p>
+                                                    @if(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by) && is_null($loan->creditEvaluation->approved_for_payment_by))
+                                                        <p><span class="label label-primary">WAITING FOR CHAIRMAN OF THE BOARD'S RESPONSE</span></p>
+                                                    @elseif(! is_null($loan->creditEvaluation->approved_for_payment_by))
+                                                        <p><span class="label label-success">CHAIRMAN OF THE BOARD</span></p>
+                                                    @else
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span></p>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </table>
