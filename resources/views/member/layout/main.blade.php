@@ -108,8 +108,8 @@
                             <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-envelope-o"></i>
                                 <span class="badge bg-green">
-                                    @if($comakerRequests->where('status', null)->count() > 0)
-                                    {{ $comakerRequests->where('status', null)->count() }}
+                                    @if($comakerRequests->where('status', null)->count() + $approvedLoans->count() > 0)
+                                    {{ $comakerRequests->where('status', null)->count() + $approvedLoans->count() }}
                                     @else
                                     0
                                     @endif
@@ -134,6 +134,23 @@
                                     </li>
                                 @endforeach
                                 @endif
+                                    @if($approvedLoans->count() > 0)
+                                        @foreach($approvedLoans->get() as $approvedLoan)
+                                            <li>
+                                                <a>
+                                                    <span class="image">
+                                                        <img src="{{ url('/storage') .'/'. $approvedLoan->member->photo_url }}" alt="Profile Image" /></span>
+                                                            <span>
+                                                        <span>{{ $approvedLoan->member->full_name }}</span>
+                                                        <span class="time">{{ \Carbon\Carbon::parse($approvedLoan->updated_at)->diffForHumans() }}</span>
+                                                    </span>
+                                                    <span class="message">
+                                                        Your Loan Application has been approved! With approved amount of P {{ number_format($approvedLoan->creditEvaluation->approved_amount, 2) }} to be paid for {{ $approvedLoan->payment_terms }} months
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @endif
                                 {{--<li>--}}
                                     {{--<div class="text-center">--}}
                                         {{--<a>--}}
