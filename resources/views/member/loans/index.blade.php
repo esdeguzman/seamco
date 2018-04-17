@@ -50,7 +50,7 @@
                                                             @if(is_null($loan->status))
                                                                 <span class="label label-warning text-uppercase">pending</span>
                                                             @elseif($loan->status == 0)
-                                                                <span class="label label-danger text-uppercase">pending</span>
+                                                                <span class="label label-danger text-uppercase">denied</span>
                                                             @elseif($loan->status == 1)
                                                                 <span class="label label-success text-uppercase">approved</span>
                                                             @endif
