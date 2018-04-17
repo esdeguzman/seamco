@@ -95,7 +95,13 @@ class AdminsController extends Controller
 
         $savings < 0 ? $savings = $savings * -1 : $savings = 0;
 
-        return view('admin.members.show', compact('member', 'savings', 'totalSharePayments'));
+        $currentLoan = Loan::whereHas('promissoryNote', function($query) {
+            $query->where('settled', 0)->where('remarks', null);
+        })->first();
+
+        return $latestPromise = $currentLoan->promissoryNote->promises->where('carbonated_date', $currentLoan->promissoryNote->promises->min('carbonated_date'))->where('status', 0)->first();
+
+        return view('admin.members.show', compact('member', 'savings', 'totalSharePayments', 'latestPromise', 'currentLoan'));
     }
 
     public function loansIndex() {
