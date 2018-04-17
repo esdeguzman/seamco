@@ -102,7 +102,7 @@ class AdminsController extends Controller
         $latestPromise = null;
 
         if(! is_null($currentLoan)) {
-            $latestPromise = $currentLoan->promissoryNote->promises->where('carbonated_date', $currentLoan->promissoryNote->promises->min('carbonated_date'))->where('status', 0)->first();
+            $latestPromise = $currentLoan->promissoryNote->promises->where('carbonated_date', $currentLoan->promissoryNote->promises->where('status', 0)->min('carbonated_date'))->first();
         }
 
         return view('admin.members.show', compact('member', 'savings', 'totalSharePayments', 'latestPromise', 'currentLoan'));
