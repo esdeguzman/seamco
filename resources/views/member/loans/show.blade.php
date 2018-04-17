@@ -60,7 +60,7 @@
                                         <br>
                                         <b>Approved Amount:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_amount)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount, 2) !!}
                                         <br>
-                                        <b>Interest:</b> {!! is_null($loan->promissoryNote) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->interest, 2) !!}
+                                        <b>Interest:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->interest, 2) !!}
                                         <br>
                                         <b>Payment Due:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
                                     </div>
@@ -168,7 +168,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Interest</th>
-                                                    <td>{!! is_null($loan->promissoryNote) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P '  .number_format($loan->creditEvaluation->interest, 2) !!}</td>
+                                                    <td>{!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P '  .number_format($loan->creditEvaluation->interest, 2) !!}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Total:</th>
