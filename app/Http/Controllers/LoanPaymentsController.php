@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class LoanPaymentsController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware('admin', ['except' => 'logout']);
+    }
 }
