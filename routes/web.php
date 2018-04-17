@@ -55,4 +55,6 @@ Route::group(['prefix' => 'member'], function () {
     Route::put('/comaker/{comaker}', 'ComakersController@update')->name('comaker.update');
     Route::put('/{member}', 'MembersController@update')->name('members.update');
     Route::put('/change-password/{member}', 'MembersController@changePassword')->name('member.change-password');
+
+    Route::get('/promissory-note/create', 'PromissoryNotesController@create')->name('promissory-note.create');
 });
