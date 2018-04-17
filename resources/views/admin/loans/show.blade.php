@@ -137,7 +137,6 @@
                                             <td>
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Approved By</p>
-
                                                     @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation) && is_null($loan->creditEvaluation->verified_by)))
                                                         <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                             {{ csrf_field() }} {{ method_field('put') }}
