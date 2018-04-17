@@ -157,6 +157,10 @@
     function logout() {
         $('#logout').submit()
     }
+
+    @if(session('info'))
+        alert('{{ session('info') }}')
+    @endif
 </script>
 </body>
 </html>
