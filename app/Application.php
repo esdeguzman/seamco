@@ -32,6 +32,6 @@ class Application extends Model
     }
 
     public function shareCertReleasedBy() {
-        return $this->belongsTo(Admin::class, "id_released_by");
+        return $this->belongsTo(Admin::class, "share_cert_given_by");
     }
 }
