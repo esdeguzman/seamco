@@ -228,19 +228,18 @@
                                 <!-- /.row -->
 
                                 <!-- this row will not appear when printing -->
-                                {{--<div class="row no-print">--}}
-                                    {{--<div class="col-xs-12">--}}
-                                        {{--@if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id && is_null($loan->comaker->status))--}}
-                                            {{--<form action="{{ route('comaker.update', $loan->comaker->id) }}" method="post">--}}
-                                                {{--{{ csrf_field() }} {{ method_field('put') }}--}}
-                                                {{--<input class="btn btn-primary pull-right col-md-3" value="APPROVED COMAKER REQUEST" name="response" type="submit"/>--}}
-                                                {{--<input class="btn btn-danger pull-right col-md-3" value="DENY COMAKER REQUEST" name="response" type="submit"/>--}}
-                                            {{--</form>--}}
+                                <div class="row no-print">
+                                    <div class="col-xs-12">
+{{--                                        @if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id && is_null($loan->comaker->status))--}}
+                                        <form action="{{ route('admin.show-member', $loan->member->id) }}" method="get">
+                                            <button class="btn btn-primary pull-right text-uppercase"type="submit">view member's information</button>
+                                            {{--<input class="btn btn-danger pull-right col-md-3" value="DENY COMAKER REQUEST" name="response" type="submit"/>--}}
+                                        </form>
                                         {{--@endif--}}
                                         {{--<button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>--}}
                                         {{--<button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
+                                    </div>
+                                </div>
                             </section>
                         </div>
                     </div>
