@@ -193,14 +193,14 @@
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-xs-6">
-                                        <p class="lead">Amount Due {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
+                                        <p class="lead">Amount Due {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount + $loan->creditEvaluation->interest,2) !!}
                                             @if(! is_null($loan->remarks))
                                                 <span class="label label-danger pull-right">Denied</span>
-                                            @elseif(is_null($loan->promissoryNote))
+                                            @elseif(is_null($loan->promissoryNote) && $loan->status != 1)
                                                 <span class="label label-warning pull-right">NOT YET APPROVED</span>
-                                            @elseif(is_null($loan->promissoryNote->settled))
+                                            @elseif((! is_null($loan->promissoryNote)) && is_null($loan->promissoryNote->settled))
                                                 <span class="label label-danger pull-right">NOT YET PAID</span>
-                                            @elseif($loan->promissoryNote->settled)
+                                            @elseif((! is_null($loan->promissoryNote)) && $loan->promissoryNote->settled)
                                                 <span class="label label-success pull-right">PAID</span>
                                             @endif
                                         </p>
