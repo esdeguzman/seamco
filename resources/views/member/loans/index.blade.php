@@ -52,7 +52,7 @@
                                                             @elseif($loan->status == 0)
                                                                 <span class="label label-danger text-uppercase">pending</span>
                                                             @elseif($loan->status == 1)
-                                                                <span class="label label-success text-uppercase">pending</span>
+                                                                <span class="label label-success text-uppercase">approved</span>
                                                             @endif
                                                         </td>
                                                         <td><a href="{{ route('loans.show', $loan->id) }}"><span class="fa fa-edit"> View</span></a></td>
