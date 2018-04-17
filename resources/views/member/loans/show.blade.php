@@ -83,7 +83,11 @@
                                             <tbody>
                                             @if(is_null($loan->promissoryNote))
                                                 <tr>
-                                                    <td colspan="5" align="center">No Promises Retrieved</td>
+                                                    <td colspan="5" align="center">
+                                                        <form action="{{ route('promissory-note.create', $loan->id) }}" method="get">
+                                                            <button class="btn btn-primary text-uppercase">create promissory note</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             @else
                                                 @foreach($loan->promisorryNote->promises as $promise)
