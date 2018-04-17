@@ -86,15 +86,21 @@
                                                     <td colspan="5" align="center">No Promises Retrieved</td>
                                                 </tr>
                                             @else
-                                                @foreach($loan->promisorryNote->promises as $promise)
+                                                @foreach($loan->promissoryNote->promises as $promise)
                                                     <tr>
                                                         <td>{{ \Carbon\Carbon::parse($promise->due_date)->toFormattedDateString() }}</td>
                                                         <td>P {{ number_format($promise->amount, 2) }}</td>
-                                                        <td>{{ $promise->payment->receivedBy->first_name }}</td>
                                                         <td>
-                                                            @if($promise->payment->status == 0)
+                                                            @if(is_null($promise->payment))
                                                                 <span class="label label-warning text-uppercase">not yet paid</span>
-                                                            @elseif($promise->payment->status == 1)
+                                                            @else
+                                                                {{ $promise->payment->receivedBy->first_name }}
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if($promise->status == 0)
+                                                                <span class="label label-warning text-uppercase">not yet paid</span>
+                                                            @elseif($promise->status == 1)
                                                                 <span class="label label-success text-uppercase">paid</span>
                                                             @endif
                                                         </td>
