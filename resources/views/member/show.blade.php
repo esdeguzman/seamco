@@ -77,7 +77,7 @@
                                                             <td>{{ $payment->amount }}</td>
                                                             <td>{{ $payment->receivedBy->first_name }}</td>
                                                             <td>{{ $payment->created_at }}</td>
-                                                            <td><a href="#"><span class="fa fa-eye"> View</span></a></td>
+                                                            <td><a href="{{ route('loans.show', $payment->loan_id) }}"><span class="fa fa-eye"> View</span></a></td>
                                                         </tr>
                                                     @endforeach
                                                 @endif
