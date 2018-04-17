@@ -21,7 +21,7 @@ class CreateLoanPaymentsTable extends Migration
             $table->unsignedInteger('received_by');
             $table->decimal('amount', 8, 2);
             $table->decimal('loan_balance', 8, 2);
-            $table->string('remarks');
+            $table->string('remarks')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
