@@ -135,7 +135,7 @@
                                 @endforeach
                                 @endif
                                     @if($approvedLoans->count() > 0)
-                                        @foreach($approvedLoans->get() as $approvedLoan)
+                                        @foreach($approvedLoans as $approvedLoan)
                                             <li>
                                                 <a>
                                                     <span class="image">
