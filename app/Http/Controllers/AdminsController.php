@@ -97,7 +97,7 @@ class AdminsController extends Controller
 
         $currentLoan = Loan::whereHas('promissoryNote', function($query) {
             $query->where('settled', 0)->where('remarks', null);
-        })->first();
+        })->orderByDesc('created_at')->first();
 
         $latestPromise = null;
 
