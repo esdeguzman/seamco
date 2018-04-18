@@ -16,29 +16,29 @@
 
                         <div class="col-md-3 col-sm-3 col-xs-12">
                             <label>Principal Amount</label>
-                            <span class="help-block">P {{ number_format($promissoryNote->principal_amount, 2) }}</span>
+                            <span class="help-block">P {{ number_format($loan->promissoryNote->principal_amount, 2) }}</span>
                         </div>
 
                         <div class="col-md-3 col-sm-3 col-xs-12">
                             <label>Interest</label>
-                            <span class="help-block">P {{ number_format($promissoryNote->interest, 2) }}</span>
+                            <span class="help-block">P {{ number_format($loan->promissoryNote->interest, 2) }}</span>
                         </div>
 
                         <div class="col-md-3 col-sm-3 col-xs-12">
                             <label>Total Amount to be Paid</label>
-                            <span class="help-block">P {{ number_format($promissoryNote->principal_amount + $promissoryNote->interest, 2) }}</span>
+                            <span class="help-block">P {{ number_format($loan->promissoryNote->principal_amount + $loan->promissoryNote->interest, 2) }}</span>
                         </div>
 
                         <div class="col-md-3 col-sm-3 col-xs-12">
                             <label>Payment Due</label>
-                            <span class="help-block">{{ \Carbon\Carbon::parse($promissoryNote->creditEvaluation->estimated_date_release)->addMonths($promissoryNote->terms)->toFormattedDateString() }}</span>
+                            <span class="help-block">{{ \Carbon\Carbon::parse($loan->promissoryNote->creditEvaluation->estimated_date_release)->addMonths($loan->promissoryNote->terms)->toFormattedDateString() }}</span>
                         </div>
                         <br>
                         <br><br><br>
 
-                        <form class="form-horizontal form-label-left" action="{{ route('promises.store', $promissoryNote->id) }}" method="post">
+                        <form class="form-horizontal form-label-left" action="{{ route('promises.store', $loan->promissoryNote->id) }}" method="post">
                             {{ csrf_field() }}
-                            @for($i = 0; $i < $promissoryNote->terms * 2; $i++)
+                            @for($i = 0; $i < $loan->promissoryNote->terms * 2; $i++)
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                                 <input type="text" class="form-control has-feedback-left date" placeholder="Due Date" name="due_date_{{ $i }}" value="{{ old('due_date_' . $i) }}" />
                                 <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
