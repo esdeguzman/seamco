@@ -226,7 +226,13 @@
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-xs-6">
-                                        <p class="lead">Amount Due {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount + $loan->creditEvaluation->interest,2) !!}
+                                        <p class="lead">Amount Due
+                                            @if($loan->status === 0)
+                                            @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release))
+                                                <span class="label label-warning">NOT YET APPROVED</span>
+                                            @else
+                                                P {{ number_format($loan->creditEvaluation->approved_amount + $loan->creditEvaluation->interest,2) }}
+                                            @endif
                                             @if(! is_null($loan->remarks))
                                                 <span class="label label-danger pull-right">Denied</span>
                                             @elseif(is_null($loan->promissoryNote) && $loan->status != 1)

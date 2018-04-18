@@ -48,21 +48,49 @@
                                         <b>Payment Terms:</b> {{ $loan->payment_terms }} months
                                         <br>
                                         <b>Comaker:</b>
-                                        @if($loan->comaker->status == 0 && ! is_null($loan->comaker->status))
+                                        @if($loan->comaker->status === 0 && ! is_null($loan->comaker->status))
                                             <span class="label label-danger">COMAKER REQUEST HAS BEEN DENIED</span>
                                         @elseif($loan->comaker->status == 1)
                                             {{ strtoupper($loan->comaker->member->full_name) }}
                                         @elseif(is_null($loan->comaker->status))
-                                        <span class="label label-warning">NOT YET ANSWERED</span>
+                                            <span class="label label-warning">NOT YET ANSWERED</span>
                                         @endif
                                         <br>
-                                        <b>Requested Amount</b> P {{ number_format($loan->total_amount, 2) }}
+                                        <b>Requested Amount</b>
+                                        @if($loan->status === 0)
+                                            <span class="label label-danger text-uppercase">loan application has been denied</span>
+                                        @elseif($loan->status)
+                                            P {{ number_format($loan->total_amount, 2) }}
+                                        @elseif(is_null($loan->status))
+                                            <span class="label label-warning">NOT YET ANSWERED</span>
+                                        @endif
                                         <br>
-                                        <b>Approved Amount:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_amount)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount, 2) !!}
+                                        <b>Approved Amount:</b>
+                                        @if($loan->status === 0)
+                                            <span class="label label-danger text-uppercase">loan application has been denied</span>
+                                        @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_amount))
+                                            <span class="label label-warning">NOT YET ANSWERED</span>
+                                        @else
+                                            P {{ number_format($loan->creditEvaluation->approved_amount, 2) }}
+                                        @endif
                                         <br>
-                                        <b>Interest:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->interest, 2) !!}
+                                        <b>Interest:</b>
+                                        @if($loan->status === 0)
+                                            <span class="label label-danger text-uppercase">loan application has been denied</span>
+                                        @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest))
+                                            <span class="label label-warning">NOT YET ANSWERED</span>
+                                        @else
+                                            P {{ number_format($loan->creditEvaluation->interest, 2) }}
+                                        @endif
                                         <br>
-                                        <b>Payment Due:</b> {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() !!}
+                                        <b>Payment Due:</b>
+                                        @if($loan->status === 0)
+                                            <span class="label label-danger text-uppercase">loan application has been denied</span>
+                                        @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release))
+                                            <span class="label label-warning">NOT YET ANSWERED</span>
+                                        @else
+                                            {{ Carbon\Carbon::parse($loan->creditEvaluation->estimated_date_release)->addMonths($loan->payment_terms)->toFormattedDateString() }}
+                                        @endif
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -151,19 +179,25 @@
                                             <td>
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Approved By</p>
-                                                    @if(! is_null($loan->creditEvaluation->approved_amount))
+                                                    @if($loan->status === 0)
+                                                        <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
+                                                    @elseif(! is_null($loan->creditEvaluation->approved_amount) && $loan->status === 0)
                                                         <p><span class="label label-success">CREDIT COMMITTEE</span></p>
                                                     @else
                                                         <p><span class="label label-warning">NOT YET APPROVED</span></p>
                                                     @endif
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
-                                                    @if(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
+                                                    @if($loan->status === 0)
+                                                        <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
+                                                    @elseif(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
                                                         <p><span class="label label-success">GENERAL MANAGER</span></p>
                                                     @else
                                                         <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
                                                     @endif
                                                     <p class="title text-primary">Approved For Payment By</p>
-                                                    @if(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by) && is_null($loan->creditEvaluation->approved_for_payment_by))
+                                                    @if($loan->status === 0)
+                                                        <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
+                                                    @elseif(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by) && is_null($loan->creditEvaluation->approved_for_payment_by))
                                                         <p><span class="label label-primary">WAITING FOR CHAIRMAN OF THE BOARD'S RESPONSE</span></p>
                                                     @elseif(! is_null($loan->creditEvaluation->approved_for_payment_by))
                                                         <p><span class="label label-success">CHAIRMAN OF THE BOARD</span></p>
@@ -176,7 +210,13 @@
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-xs-6">
-                                        <p class="lead">Amount Due {!! (is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release)) ? '<span class="label label-warning">NOT YET APPROVED</span>' : 'P ' . number_format($loan->creditEvaluation->approved_amount + $loan->creditEvaluation->interest,2) !!}
+                                        <p class="lead">Amount Due
+                                            @if($loan->status === 0)
+                                            @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release))
+                                                <span class="label label-warning">NOT YET APPROVED</span>
+                                            @else
+                                                P {{ number_format($loan->creditEvaluation->approved_amount + $loan->creditEvaluation->interest,2) }}
+                                            @endif
                                             @if(! is_null($loan->remarks))
                                                 <span class="label label-danger pull-right">Denied</span>
                                             @elseif(is_null($loan->promissoryNote) && $loan->status != 1)
