@@ -81,7 +81,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @if(is_null($loan->promissoryNote))
+                                            @if(is_null($loan->promissoryNote) && $loan->status)
                                                 <tr>
                                                     <td colspan="5" align="center">
                                                         <form action="{{ route('promissory-note.create', $loan->id) }}" method="get">
@@ -89,7 +89,7 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @else
+                                            @elseif(! is_null($loan->promissoryNote) && ! is_null($loan->status))
                                                 @foreach($loan->promissoryNote->promises as $promise)
                                                 <tr>
                                                     <td>{{ \Carbon\Carbon::parse($promise->due_date)->toFormattedDateString() }}</td>
@@ -110,6 +110,10 @@
                                                     </td>
                                                 </tr>
                                                 @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="5" align="center">No Promises Found</td>
+                                                </tr>
                                             @endif
                                             </tbody>
                                         </table>
