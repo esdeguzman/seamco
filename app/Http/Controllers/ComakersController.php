@@ -21,7 +21,6 @@ class ComakersController extends Controller
     else if($request->response == 'DENY COMAKER REQUEST') {
             $comaker->status = 0;
 
-            $comaker->loan->creditEvaluation->delete();
             $loan = $comaker->loan;
             $loan->status = 0;
             $loan->remarks = "Comaker request has been denied by {$comaker->member->full_name}!";
