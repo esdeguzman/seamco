@@ -166,6 +166,24 @@ class LoansController extends Controller
             $approved_amount = str_replace(',', '', $request->approved_amount);
             $interest = str_replace(',', '', $request->interest);
 
+            if($approved_amount > $loan->total_amount) {
+                $request->session()->flash('info', 'Approved amount is greater than the requested amount!');
+
+                return back()->withInput();
+            }
+
+            if(($interest > $approved_amount) || ($interest > $loan->total_amount)) {
+                $request->session()->flash('info', 'Interest is greater than the approved amount/requested amount! Please take time to review this one.');
+
+                return back()->withInput();
+            }
+
+            if(Carbon::parse($request->estimated_date_release)->lessThan(Carbon::now())) {
+                $request->session()->flash('info', 'Estimated date of release must be set today or other succeeding days.');
+
+                return back()->withInput();
+            }
+
             $creditEvaluation = $loan->creditEvaluation;
             $creditEvaluation->approved_amount = $approved_amount;
             $creditEvaluation->interest = $interest;
