@@ -48,7 +48,7 @@
                                         <b>Payment Terms:</b> {{ $loan->payment_terms }} months
                                         <br>
                                         <b>Comaker:</b>
-                                        @if($loan->comaker->status == 0 && ! is_null($loan->comaker->status))
+                                        @if($loan->comaker->status === 0 && ! is_null($loan->comaker->status))
                                             <span class="label label-danger">COMAKER REQUEST HAS BEEN DENIED</span>
                                         @elseif($loan->comaker->status == 1)
                                             {{ strtoupper($loan->comaker->member->full_name) }}
@@ -57,7 +57,7 @@
                                         @endif
                                         <br>
                                         <b>Requested Amount</b>
-                                        @if($loan->status == 0)
+                                        @if($loan->status === 0)
                                             <span class="label label-danger text-uppercase">loan application has been denied</span>
                                         @elseif($loan->status)
                                             P {{ number_format($loan->total_amount, 2) }}
@@ -66,7 +66,7 @@
                                         @endif
                                         <br>
                                         <b>Approved Amount:</b>
-                                        @if($loan->status == 0)
+                                        @if($loan->status === 0)
                                             <span class="label label-danger text-uppercase">loan application has been denied</span>
                                         @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->approved_amount))
                                             <span class="label label-warning">NOT YET ANSWERED</span>
@@ -75,7 +75,7 @@
                                         @endif
                                         <br>
                                         <b>Interest:</b>
-                                        @if($loan->status == 0)
+                                        @if($loan->status === 0)
                                             <span class="label label-danger text-uppercase">loan application has been denied</span>
                                         @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->interest))
                                             <span class="label label-warning">NOT YET ANSWERED</span>
@@ -84,7 +84,7 @@
                                         @endif
                                         <br>
                                         <b>Payment Due:</b>
-                                        @if($loan->status == 0)
+                                        @if($loan->status === 0)
                                             <span class="label label-danger text-uppercase">loan application has been denied</span>
                                         @elseif(is_null($loan->creditEvaluation) || is_null($loan->creditEvaluation->estimated_date_release))
                                             <span class="label label-warning">NOT YET ANSWERED</span>
@@ -126,7 +126,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            @if($promise->status == 0)
+                                                            @if($promise->status === 0)
                                                                 <span class="label label-warning text-uppercase">not yet paid</span>
                                                             @elseif($promise->status == 1)
                                                                 <span class="label label-success text-uppercase">paid</span>
