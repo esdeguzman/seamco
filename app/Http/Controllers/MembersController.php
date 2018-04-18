@@ -19,10 +19,12 @@ class MembersController extends Controller
 
     public function show(Request $request) {
         $member = Member::find(Auth::guard('member')->user()->id);
-        $logout = false;
 
         if(count($member->sharePayments) == 0) {
-            $logout = true;
+            $request->session()->flash('info', 'Your application review has not yet been completed, please try again some other time or contact us at 09282683776/413-2230, Thank you!');
+            Auth::guard('member')->logout();
+
+            return back();
         }
 
         return view('member.show', compact('logout', 'member'));
