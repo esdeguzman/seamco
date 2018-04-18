@@ -143,13 +143,13 @@
                                             <td>
                                                 <div class="project_detail">
                                                     <p class="title text-primary">Approved By</p>
-                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation) && is_null($loan->creditEvaluation->verified_by)))
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation) && is_null($loan->creditEvaluation->verified_by)) && (! is_null($loan->comaker->status) && $loan->comaker->status))
                                                         <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                             {{ csrf_field() }} {{ method_field('put') }}
                                                             <input type="submit" value="APPROVE" name="cc_response" class="btn btn-primary form-control" />
                                                             <input type="submit" value="DISAPPROVE" name="cc_response" class="btn btn-danger form-control" />
                                                         </form>
-                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (is_null($loan->creditEvaluation->approved_amount)))
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (is_null($loan->creditEvaluation->approved_amount)) && (! is_null($loan->comaker->status) && $loan->comaker->status))
                                                         <br>
                                                         <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                             {{ csrf_field() }} {{ method_field('put') }}
