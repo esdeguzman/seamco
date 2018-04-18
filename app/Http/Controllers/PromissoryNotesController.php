@@ -14,11 +14,11 @@ class PromissoryNotesController extends Controller
     }
 
     public function create(Loan $loan) {
-        if(is_null($loan->promissoryNote)) $promissoryNote = $this->store($loan);
+        if(is_null($loan->promissoryNote)) $this->store($loan);
 
-        $promissoryNote = $loan->promissoryNote;
+        $loan = Loan::find($loan->id); // without this an error occurs **only for first time loading AKA immediate access of promissory note right after its creation**
 
-        return view('member.promises.create', compact('promissoryNote'));
+        return view('member.promises.create', compact('loan'));
     }
 
     public function store($loan) {
