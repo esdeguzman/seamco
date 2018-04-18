@@ -27,7 +27,7 @@ class ComposerServiceProvider extends ServiceProvider
            ], function($view) {
            $view->with([
                'comakerRequests' => Comaker::where('member_id', Auth::guard('member')->user()->id),
-               'approvedLoans' => Loan::doesntHave('promissoryNote')->where('member_id', Auth::guard('member')->user()->id)->where('remarks', null)->get(),
+               'approvedLoans' => Loan::doesntHave('promissoryNote')->where('member_id', Auth::guard('member')->user()->id)->where('remarks', null)->where('status', '!=', null)->get(),
            ]);
        });
     }
