@@ -68,6 +68,10 @@
     @if(session('success'))
         alert('{{ session('success') }}')
     @endif
+
+    @if(session('info'))
+        alert('{{ session('info') }}')
+    @endif
 </script>
 </body>
 </html>
