@@ -154,6 +154,13 @@ class LoansController extends Controller
                 $creditEvaluation->save();
 
                 $loan->status = 1;
+            } else {
+                $creditEvaluation = $loan->creditEvaluation;
+                $creditEvaluation->status = 0;
+                $creditEvaluation->save();
+
+                $loan->status = 0;
+                $loan->remarks = 'Denied by ' . Auth::guard('admin')->user()->first_name;
             }
         }
 
@@ -162,6 +169,13 @@ class LoansController extends Controller
                 $creditEvaluation = $loan->creditEvaluation;
                 $creditEvaluation->verified_by = Auth::guard('admin')->user()->id;
                 $creditEvaluation->save();
+            } else {
+                $creditEvaluation = $loan->creditEvaluation;
+                $creditEvaluation->status = 0;
+                $creditEvaluation->save();
+
+                $loan->status = 0;
+                $loan->remarks = 'Denied by ' . Auth::guard('admin')->user()->first_name;
             }
         }
 
@@ -199,6 +213,13 @@ class LoansController extends Controller
                 $creditEvaluation = $loan->creditEvaluation;
                 $creditEvaluation->recommended_for_loan_extension_by = Auth::guard('admin')->user()->id;
                 $creditEvaluation->save();
+            } else {
+                $creditEvaluation = $loan->creditEvaluation;
+                $creditEvaluation->status = 0;
+                $creditEvaluation->save();
+
+                $loan->status = 0;
+                $loan->remarks = 'Denied by ' . Auth::guard('admin')->user()->first_name;
             }
         }
 
