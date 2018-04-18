@@ -167,7 +167,7 @@
                                                         <p><span class="label label-warning">NOT YET APPROVED</span></p>
                                                     @endif
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
-                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'gm_rico' && ((! is_null($loan->creditEvaluation)) && ! is_null($loan->creditEvaluation->approved_amount)))
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'gm_rico' && ((! is_null($loan->creditEvaluation)) && ! is_null($loan->creditEvaluation->approved_amount)) && is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
                                                         <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                             {{ csrf_field() }} {{ method_field('put') }}
                                                             <input type="submit" value="APPROVE" name="gm_response" class="btn btn-primary form-control" />
