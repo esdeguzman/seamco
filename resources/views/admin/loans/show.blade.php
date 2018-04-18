@@ -56,14 +56,7 @@
                                             <span class="label label-warning">NOT YET ANSWERED</span>
                                         @endif
                                         <br>
-                                        <b>Requested Amount</b>
-                                        @if($loan->status === 0)
-                                            <span class="label label-danger text-uppercase">loan application has been denied</span>
-                                        @elseif($loan->status)
-                                            P {{ number_format($loan->total_amount, 2) }}
-                                        @elseif(is_null($loan->status))
-                                            <span class="label label-warning">NOT YET ANSWERED</span>
-                                        @endif
+                                        <b>Requested Amount</b> P {{ number_format($loan->total_amount, 2) }}
                                         <br>
                                         <b>Approved Amount:</b>
                                         @if($loan->status === 0)
