@@ -119,7 +119,7 @@
                                 @if($comakerRequests->where('status', null)->count() > 0)
                                 @foreach($comakerRequests->where('status', null)->get() as $comakerRequest)
                                     <li>
-                                        <a>
+                                        <a href="{{ route('loans.show', $comakerRequest->loan_id) }}">
                                             <span class="image">
                                                 <img src="{{ url('/storage') .'/'. $comakerRequest->requestedBy->photo_url }}" alt="Profile Image" /></span>
                                                         <span>
