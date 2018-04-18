@@ -10,6 +10,7 @@ use App\Notifications\NewComakerRequest;
 use App\PromissoryNote;
 use App\Share;
 use App\SharePayment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -114,9 +115,24 @@ class LoansController extends Controller
 
         $comaker = Member::find($newComakerRequest->member_id);
 
+        $dateOfLastLoan = null;
+        $dateOfLastLoanPayment = null;
+        $balanceOfLastLoan = null;
+
+        $lastLoan = Loan::where('member_id', 1)->where('status', '!=', null)->orderByDesc('updated_at')->first();
+
+        if(! is_null($lastLoan)) {
+            $dateOfLastLoan = $lastLoan->updated_at;
+            $dateOfLastLoanPayment = $lastLoan->payments->promise->orderByDesc('carbonated_date')->first()->created_at;
+            $balanceOfLastLoan = $lastLoan->payments->promise->orderByDesc('carbonated_date')->first()->loan_balance;
+        }
+
         // create credit evaluation
         $creditEvaluation = CreditEvaluation::create([
-            'member_id' => $member->id
+            'member_id' => $member->id,
+            'date_of_last_loan' => $dateOfLastLoan,
+            'date_of_last_payment' => $dateOfLastLoanPayment,
+            'balance_of_last_loan' => $balanceOfLastLoan,
         ]);
 
         $loan->credit_evaluation_id = $creditEvaluation->id;
