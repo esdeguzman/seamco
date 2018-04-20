@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\MemberAuth;
 
+use App\Admin;
 use App\Application;
 use App\Member;
+use App\Notifications\NewApplicationNotification;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -114,6 +116,11 @@ class RegisterController extends Controller
         ]);
 
         // TODO: notify admin User::find(1)->notify(new NewApplicant());
+        $admins = Admin::find(['2', '3', '4']);
+
+        foreach ($admins as $admin) {
+            $admin->notify(new NewApplicationNotification());
+        }
 
         return $member;
     }
