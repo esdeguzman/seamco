@@ -50,7 +50,7 @@
                     </div>
                     <div class="x_content">
                         @if($applicants->count() > 0)
-                            @foreach($applicants as $applicant)
+                            @foreach($applicants->sortByDesc('created_at') as $applicant)
                             <article class="media event">
                                 <a class="pull-left date">
                                     <p class="month">{{ \Carbon\Carbon::parse($applicant->created_at)->format('F') }}</p>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="x_content">
                     @if($loanApplications->count() > 0)
-                        @foreach($loanApplications as $loanApplication)
+                        @foreach($loanApplications->sortByDesc('created_at') as $loanApplication)
                             <article class="media event">
                                 <a class="pull-left date">
                                     <p class="month">{{ \Carbon\Carbon::parse($loanApplication->created_at)->format('F') }}</p>
