@@ -25,6 +25,7 @@ class CreateCreditEvaluationsTable extends Migration
             $table->string('approved_for_payment_by')->nullable();
             $table->string('estimated_date_release')->nullable();
             $table->decimal('approved_amount', 20, 2)->nullable();
+            $table->decimal('interest', 20, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

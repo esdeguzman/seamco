@@ -17,7 +17,7 @@ class CreateLoansTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('member_id');
             $table->unsignedInteger('credit_evaluation_id')->nullable();
-            $table->tinyInteger('status')->default('0');
+            $table->tinyInteger('status')->nullable();
             $table->decimal('regular', 20, 2)->default('0.0');
             $table->decimal('short_term', 20, 2)->default('0.0');
             $table->decimal('pre_joining', 20, 2)->default('0.0');
