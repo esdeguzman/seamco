@@ -117,4 +117,14 @@ class AdminsController extends Controller
     public function showLoan(Loan $loan) {
         return view('admin.loans.show', compact('loan'));
     }
+
+    /**
+     * @param Member $member
+     * @throws \Exception
+     */
+    public function deleteMember(Member $member) {
+        $member->delete();
+
+        return redirect()->route('admin.approved-members');
+    }
 }
