@@ -33,6 +33,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::put('/applicant/{applicant}', 'ApplicationsController@update')->name('applications.update');
     Route::put('/{admin}', 'AdminsController@update')->name('admin.update');
     Route::put('/change-password/{admin}', 'AdminsController@changePassword')->name('admin.change-password');
+    Route::delete('delete/{member}', 'AdminsController@deleteMember')->name('admin.delete-member');
 });
 
 Route::group(['prefix' => 'member'], function () {
