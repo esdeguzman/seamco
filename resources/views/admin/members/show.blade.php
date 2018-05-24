@@ -292,8 +292,6 @@
                                             <button type="submit" class="btn btn-block btn-success">UPDATE MEMBER'S SHARE VALUE</button>
                                         </form>
                                         <div class="ln_solid"></div>
-                                        <br />
-                                        <br />
                                         <h5>Reset Password</h5>
                                         <form class="form" action="#" method="post">
                                             {{ csrf_field() }} {{ method_field('put') }}
@@ -306,6 +304,16 @@
                                             {{ csrf_field() }} {{ method_field('put') }}
                                             <input class="form-control" type="email" name="email" placeholder="Enter new email address"><br/>
                                             <button type="submit" class="btn btn-block btn-primary">CHANGE USER EMAIL ADDRESS</button>
+                                        </form>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div class="ln_solid"></div>
+                                        <h2 class="text text-uppercase text-danger center">danger zone</h2>
+                                        <div class="ln_solid"></div>
+                                        <form class="form" action="{{ route('admin.delete-member', $member->id) }}" method="post">
+                                            {{ csrf_field() }} {{ method_field('delete') }}
+                                            <button type="submit" class="btn btn-block btn-danger text-uppercase">delete member information</button>
                                         </form>
                                     </div>
 
@@ -344,5 +352,7 @@
 
 <script>
     $('.money').mask('#,##0.00', {reverse: true})
+
+
 </script>
 @stop
