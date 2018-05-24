@@ -61,6 +61,11 @@ class LoginController extends Controller
         return Auth::guard('member');
     }
 
+    public function username()
+    {
+        return 'username';
+    }
+
     public function logoutToPath() {
         return url('member/login');
     }
