@@ -109,7 +109,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @if(is_null($loan->promissoryNote) && $loan->status)
+                                            @if((is_null($loan->promissoryNote) || count($loan->promissoryNote->promises) == 0) && $loan->status)
                                                 <tr>
                                                     <td colspan="5" align="center">
                                                         <form action="{{ route('promissory-note.create', $loan->id) }}" method="get">
