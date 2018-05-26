@@ -119,15 +119,19 @@ class LoansController extends Controller
         $dateOfLastLoanPayment = null;
         $balanceOfLastLoan = null;
 
-        $lastLoan = Loan::whereHas('promissoryNote')
-            ->whereHas('payments')->where('member_id', 1)
+        $lastLoan = Loan::where('member_id', $member->id)
             ->where('status', '!=', null)
-            ->orderBy('updated_at')->first();
+            ->where('status', '!=', 0)
+            ->get()->last();
 
-        if(! is_null($lastLoan)) {
+        if(count($lastLoan) > 0) {
             $dateOfLastLoan = $lastLoan->updated_at;
-            $dateOfLastLoanPayment = $lastLoan->payments->first()->promise->orderBy('updated_at')->first()->updated_at;
-            $balanceOfLastLoan = $lastLoan->payments->first()->loan_balance;
+            if(count($lastLoan->payments) > 0) $dateOfLastLoanPayment = $lastLoan->payments->first()->promise->orderBy('updated_at')->first()->updated_at;
+            if(count($lastLoan->payments) > 0) {
+                $balanceOfLastLoan = $lastLoan->payments->first()->loan_balance;
+            } else {
+                $balanceOfLastLoan = $lastLoan->creditEvaluation->approved_amount + $lastLoan->creditEvaluation->interest;
+            }
         }
 
         // create credit evaluation
