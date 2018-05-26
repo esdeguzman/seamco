@@ -178,6 +178,22 @@
                                             </th>
                                             <td>
                                                 <div class="project_detail">
+                                                    <p class="title text-primary">Date of Last Loan</p>
+                                                    <p>
+                                                        @if (count($loan->creditEvaluation) > 0)
+                                                            {{ \Carbon\Carbon::parse($loan->creditEvaluation->date_of_last_loan)->toFormattedDateString() }}
+                                                        @else
+                                                            None
+                                                        @endif
+                                                    </p>
+                                                    <p class="title text-primary">Balance of Last Loan</p>
+                                                    <p>
+                                                        @if (count($loan->creditEvaluation) > 0)
+                                                            P {{ number_format($loan->creditEvaluation->balance_of_last_loan, 2) }}
+                                                        @else
+                                                            None
+                                                        @endif
+                                                    </p>
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
                                                     @if($loan->status === 0)
                                                         <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
