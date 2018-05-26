@@ -178,14 +178,6 @@
                                             </th>
                                             <td>
                                                 <div class="project_detail">
-                                                    <p class="title text-primary">Approved By</p>
-                                                    @if($loan->status === 0)
-                                                        <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
-                                                    @elseif(! is_null($loan->creditEvaluation->approved_amount) && $loan->status === 0)
-                                                        <p><span class="label label-success">CREDIT COMMITTEE</span></p>
-                                                    @else
-                                                        <p><span class="label label-warning">NOT YET APPROVED</span></p>
-                                                    @endif
                                                     <p class="title text-primary">Recommended for Loan Extension By</p>
                                                     @if($loan->status === 0)
                                                         <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
@@ -193,6 +185,14 @@
                                                         <p><span class="label label-success">GENERAL MANAGER</span></p>
                                                     @else
                                                         <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
+                                                    @endif
+                                                    <p class="title text-primary">Approved By</p>
+                                                    @if($loan->status === 0)
+                                                        <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
+                                                    @elseif(! is_null($loan->creditEvaluation->approved_amount))
+                                                        <p><span class="label label-success">CREDIT COMMITTEE</span></p>
+                                                    @else
+                                                        <p><span class="label label-warning">NOT YET APPROVED</span></p>
                                                     @endif
                                                     <p class="title text-primary">Approved For Payment By</p>
                                                     @if($loan->status === 0)

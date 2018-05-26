@@ -163,14 +163,28 @@
                                             </th>
                                             <td>
                                                 <div class="project_detail">
+                                                    <p class="title text-primary">Recommended for Loan Extension By</p>
+                                                    @if($loan->status === 0) <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'gm_rico' && is_null($loan->creditEvaluation->recommended_for_loan_extension_by) && (! is_null($loan->comaker->status) && $loan->comaker->status)) {{-- (! is_null($loan->creditEvaluation)) --}}
+                                                        <form action="{{ route('loans.update', $loan->id) }}" method="post">
+                                                            {{ csrf_field() }} {{ method_field('put') }}
+                                                            <input type="submit" value="APPROVE" name="gm_response" class="btn btn-primary form-control" />
+                                                            <input type="submit" value="DISAPPROVE" name="gm_response" class="btn btn-danger form-control" />
+                                                        </form>
+                                                    @elseif(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
+                                                        <p><span class="label label-success">GENERAL MANAGER</span></p>
+                                                    @else
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
+                                                    @endif
+
                                                     <p class="title text-primary">Approved By</p>
-                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation) && is_null($loan->creditEvaluation->verified_by)) && (! is_null($loan->comaker->status) && $loan->comaker->status))
+                                                    @if(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (! is_null($loan->creditEvaluation) && ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) && is_null($loan->creditEvaluation->status))
                                                         <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                             {{ csrf_field() }} {{ method_field('put') }}
                                                             <input type="submit" value="APPROVE" name="cc_response" class="btn btn-primary form-control" />
                                                             <input type="submit" value="DISAPPROVE" name="cc_response" class="btn btn-danger form-control" />
                                                         </form>
-                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (is_null($loan->creditEvaluation->approved_amount)) && (! is_null($loan->comaker->status) && $loan->comaker->status))
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (is_null($loan->creditEvaluation->approved_amount)) && $loan->creditEvaluation->status)
                                                         <br>
                                                         <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                             {{ csrf_field() }} {{ method_field('put') }}
@@ -187,33 +201,21 @@
                                                     @else
                                                         <p><span class="label label-warning">NOT YET APPROVED</span></p>
                                                     @endif
-                                                    <p class="title text-primary">Recommended for Loan Extension By</p>
-                                                    @if($loan->status === 0) <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
-                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'gm_rico' && ((! is_null($loan->creditEvaluation)) && ! is_null($loan->creditEvaluation->approved_amount)) && is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
-                                                        <form action="{{ route('loans.update', $loan->id) }}" method="post">
-                                                            {{ csrf_field() }} {{ method_field('put') }}
-                                                            <input type="submit" value="APPROVE" name="gm_response" class="btn btn-primary form-control" />
-                                                            <input type="submit" value="DISAPPROVE" name="gm_response" class="btn btn-danger form-control" />
-                                                        </form>
-                                                    @elseif(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
-                                                        <p><span class="label label-success">GENERAL MANAGER</span></p>
-                                                    @else
-                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
-                                                    @endif
+
                                                     <p class="title text-primary">Approved For Payment By</p>
                                                     @if($loan->status === 0) <p><span class="label label-danger text-uppercase">loan application has been denied</span></p>
-                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'ch_lloyd' && (! is_null($loan->creditEvaluation) && ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by)) && is_null($loan->creditEvaluation->approved_for_payment_by))
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'ch_lloyd' && (! is_null($loan->creditEvaluation) && ! is_null($loan->creditEvaluation->verified_by)) && is_null($loan->creditEvaluation->approved_for_payment_by))
                                                     <form action="{{ route('loans.update', $loan->id) }}" method="post">
                                                         {{ csrf_field() }} {{ method_field('put') }}
                                                         <input type="submit" value="APPROVE" name="ch_response" class="btn btn-primary form-control" />
                                                         <input type="submit" value="DISAPPROVE" name="ch_response" class="btn btn-danger form-control" />
                                                     </form>
-                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username != 'ch_lloyd' && ! is_null($loan->creditEvaluation->recommended_for_loan_extension_by) && is_null($loan->creditEvaluation->approved_for_payment_by))
+                                                @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username != 'ch_lloyd' && ! is_null($loan->creditEvaluation->verified_by) && is_null($loan->creditEvaluation->approved_for_payment_by))
                                                         <p><span class="label label-primary">WAITING FOR CHAIRMAN OF THE BOARD'S RESPONSE</span></p>
                                                     @elseif(! is_null($loan->creditEvaluation->approved_for_payment_by))
                                                         <p><span class="label label-success">CHAIRMAN OF THE BOARD</span></p>
                                                     @else
-                                                        <p><span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span></p>
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
                                                     @endif
                                                 </div>
                                             </td>
