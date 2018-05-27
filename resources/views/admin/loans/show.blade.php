@@ -190,7 +190,7 @@
                                                     @elseif(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
                                                         <p><span class="label label-success">GENERAL MANAGER</span></p>
                                                     @else
-                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span></p>
                                                     @endif
 
                                                     <p class="title text-primary">Approved By</p>
@@ -217,7 +217,7 @@
                                                     @elseif(! is_null($loan->creditEvaluation->approved_amount))
                                                         <p><span class="label label-success">CREDIT COMMITTEE</span></p>
                                                     @else
-                                                        <p><span class="label label-warning">NOT YET APPROVED</span></p>
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
                                                     @endif
 
                                                     <p class="title text-primary">Approved For Payment By</p>
