@@ -187,6 +187,18 @@
                                                             <input type="submit" value="APPROVE" name="gm_response" class="btn btn-primary form-control" />
                                                             <input type="submit" value="DISAPPROVE" name="gm_response" class="btn btn-danger form-control" />
                                                         </form>
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'gm_rico' && (is_null($loan->creditEvaluation->approved_amount)) && $loan->creditEvaluation->status)
+                                                        <br>
+                                                        <form action="{{ route('loans.update', $loan->id) }}" method="post">
+                                                            {{ csrf_field() }} {{ method_field('put') }}
+                                                            <label for="approved_amount">Approved Amount</label>
+                                                            <input type="text" name="approved_amount" class="form-control money" /><br>
+                                                            <label for="interest">Interest</label>
+                                                            <input type="text" name="interest" class="form-control money" /><br>
+                                                            <label for="estimated_date_release">Estimated Date of Release</label>
+                                                            <input type="text" name="estimated_date_release" class="form-control date" /><br>
+                                                            <button type="submit" class="btn btn-primary text-uppercase btn-block">save approved amount</button>
+                                                        </form>
                                                     @elseif(! is_null($loan->creditEvaluation->recommended_for_loan_extension_by))
                                                         <p><span class="label label-success">GENERAL MANAGER</span></p>
                                                     @else
@@ -202,22 +214,10 @@
                                                             <input type="submit" value="APPROVE" name="cc_response" class="btn btn-primary form-control" />
                                                             <input type="submit" value="DISAPPROVE" name="cc_response" class="btn btn-danger form-control" />
                                                         </form>
-                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username == 'cc_dex' && (is_null($loan->creditEvaluation->approved_amount)) && $loan->creditEvaluation->status)
-                                                        <br>
-                                                        <form action="{{ route('loans.update', $loan->id) }}" method="post">
-                                                            {{ csrf_field() }} {{ method_field('put') }}
-                                                            <label for="approved_amount">Approved Amount</label>
-                                                            <input type="text" name="approved_amount" class="form-control money" /><br>
-                                                            <label for="interest">Interest</label>
-                                                            <input type="text" name="interest" class="form-control money" /><br>
-                                                            <label for="estimated_date_release">Estimated Date of Release</label>
-                                                            <input type="text" name="estimated_date_release" class="form-control date" /><br>
-                                                            <button type="submit" class="btn btn-primary text-uppercase btn-block">approved amount</button>
-                                                        </form>
-                                                    @elseif(! is_null($loan->creditEvaluation->approved_amount))
+                                                    @elseif(! is_null($loan->creditEvaluation->verified_by))
                                                         <p><span class="label label-success">CREDIT COMMITTEE</span></p>
                                                     @else
-                                                        <p><span class="label label-warning">NOT YET APPROVED BY GENERAL MANAGER</span></p>
+                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
                                                     @endif
 
                                                     <p class="title text-primary">Approved For Payment By</p>
@@ -228,12 +228,12 @@
                                                         <input type="submit" value="APPROVE" name="ch_response" class="btn btn-primary form-control" />
                                                         <input type="submit" value="DISAPPROVE" name="ch_response" class="btn btn-danger form-control" />
                                                     </form>
-                                                @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username != 'ch_lloyd' && ! is_null($loan->creditEvaluation->verified_by) && is_null($loan->creditEvaluation->approved_for_payment_by))
+                                                    @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->user()->username != 'ch_lloyd' && ! is_null($loan->creditEvaluation->verified_by) && is_null($loan->creditEvaluation->approved_for_payment_by))
                                                         <p><span class="label label-primary">WAITING FOR CHAIRMAN OF THE BOARD'S RESPONSE</span></p>
                                                     @elseif(! is_null($loan->creditEvaluation->approved_for_payment_by))
                                                         <p><span class="label label-success">CHAIRMAN OF THE BOARD</span></p>
                                                     @else
-                                                        <p><span class="label label-warning">NOT YET APPROVED BY CREDIT COMMITTEE</span></p>
+                                                        <p><span class="label label-primary">WAITING FOR CHAIRMAN OF THE BOARD'S RESPONSE</span></p>
                                                     @endif
                                                 </div>
                                             </td>
