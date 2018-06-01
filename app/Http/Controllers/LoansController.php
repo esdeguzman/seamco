@@ -171,7 +171,6 @@ class LoansController extends Controller
         if($request->has('cc_response')) {
             if($request->cc_response == 'APPROVE') {
                 $creditEvaluation = $loan->creditEvaluation;
-                $creditEvaluation->status = 1;
                 $creditEvaluation->verified_by = Auth::guard('admin')->user()->id;
                 $creditEvaluation->save();
             } else {
@@ -216,6 +215,7 @@ class LoansController extends Controller
         if($request->has('gm_response')) {
             if($request->gm_response == 'APPROVE') {
                 $creditEvaluation = $loan->creditEvaluation;
+                $creditEvaluation->status = 1;
                 $creditEvaluation->recommended_for_loan_extension_by = Auth::guard('admin')->user()->id;
                 $creditEvaluation->save();
             } else {
