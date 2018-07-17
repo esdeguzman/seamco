@@ -29,8 +29,8 @@
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                                            <form class="form-horizontal form-label-left">
-
+                                            <form class="form-horizontal form-label-left" action="{{ route('admins.update-member-info', $member->id) }}" method="post">
+                                                {{ csrf_field() }} {{ method_field('put') }}
                                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                     <input type="text" class="form-control has-feedback-left" placeholder="First Name" name="full_name" value="{{ $member->full_name }}" />
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
@@ -42,12 +42,12 @@
                                                 </div>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    <input type="text" class="form-control has-feedback-left" placeholder="User Name" name="username" value="{{ $member->username }}" />
+                                                    <input type="text" class="form-control has-feedback-left" placeholder="User Name" name="username" value="{{ $member->username }}" disabled/>
                                                     <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    <input type="text" class="form-control" placeholder="Code" name="code" value="{{ $member->code }}" />
+                                                    <input type="text" class="form-control" placeholder="Code" name="code" value="{{ $member->code }}" disabled/>
                                                     <span class="fa fa-barcode form-control-feedback right" aria-hidden="true"></span>
                                                 </div>
 

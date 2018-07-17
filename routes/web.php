@@ -13,6 +13,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/show-member/{member}', 'AdminsController@showMember')->name('admin.show-member');
     Route::post('/share-payment/{member}', 'SharePaymentsController@store')->name('admin.share-payment.store');
     Route::put('/update-member-share/{member}', 'SharesController@store')->name('share.store');
+    Route::put('/update-member-info/{member}', 'AdminsController@updateMemberInfo')->name('admins.update-member-info');
     Route::get('/update-member-share-payment/{sharePayment}', 'SharePaymentsController@edit')->name('share-payment.edit');
     Route::put('/update-member-share-payment/{sharePayment}', 'SharePaymentsController@update')->name('share-payment.update');
     Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');

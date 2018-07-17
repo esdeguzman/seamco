@@ -127,4 +127,26 @@ class AdminsController extends Controller
 
         return redirect()->route('admin.approved-members');
     }
+
+    public function updateMemberInfo(Member $member, Request $request) {
+        $salary = str_replace(',', '', $request->salary);
+
+        $member->full_name = $request->full_name;
+        $member->civil_status = $request->civil_status;
+        $member->birth_date = $request->birth_date;
+        $member->mobile_number = $request->mobile_number;
+        $member->present_address = $request->present_address;
+        $member->employer = $request->employer;
+        $member->tax_identification_number = $request->tax_identification_number;
+        $member->position = $request->position;
+        $member->department = $request->department;
+        $member->employment_date = $request->employment_date;
+        $member->salary = $salary;
+        $member->employer_address = $request->employer_address;
+        $member->other_source_of_income = $request->other_source_of_income;
+        $member->number_of_dependents = $request->number_of_dependents;
+        $member->save();
+
+        return back();
+    }
 }
