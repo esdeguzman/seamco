@@ -42,12 +42,12 @@
                                                 </div>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    <input type="text" class="form-control has-feedback-left" placeholder="User Name" name="username" value="{{ $member->username }}" />
+                                                    <input type="text" class="form-control has-feedback-left" placeholder="User Name" name="username" value="{{ $member->username }}" disabled/>
                                                     <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    <input type="text" class="form-control" placeholder="Code" name="code" value="{{ $member->code }}" />
+                                                    <input type="text" class="form-control" placeholder="Code" name="code" value="{{ $member->code }}" disabled/>
                                                     <span class="fa fa-barcode form-control-feedback right" aria-hidden="true"></span>
                                                 </div>
 
