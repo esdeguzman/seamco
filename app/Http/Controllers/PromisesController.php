@@ -39,12 +39,12 @@ class PromisesController extends Controller
             $totalAmount += str_replace(',', '', $value);
         }
 
-        if($totalAmount < $toBePaid) {
+        if(bccomp($totalAmount, $toBePaid) == -1) {
             $lack = $toBePaid - $totalAmount;
             $request->session()->flash('info', 'Promised amounts are not sufficient to pay approved amount plus its interest! You still lack P ' . number_format($lack,2));
 
             return back()->withInput();
-        } else if($totalAmount > $toBePaid) {
+        } else if(bccomp($totalAmount, $toBePaid) == 1) {
             $excess = $totalAmount - $toBePaid;
             $request->session()->flash('info', 'Promised amounts exceeds the amount you have to pay! Your excess is P ' . number_format($excess,2) . '.');
 
