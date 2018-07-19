@@ -144,12 +144,12 @@
 
                                             <p class="title">Code</p>
                                             <p>{{ \Illuminate\Support\Facades\Auth::guard('member')->user()->code }}</p>
-                                            <p class="title">Total Share Payment</p>
-                                            <p>P 50,000.00</p>
+                                            <p class="title">Total Share Payments</p>
+                                            <p>P {{ number_format($totalSharePayments, 2) }}</p>
                                             <p class="title">Share Amount</p>
-                                            <p>P 50,000.00</p>
+                                            <p>P {{ number_format($member->shares->last()->value, 2) }}</p>
                                             <p class="title">Current Savings</p>
-                                            <p>P 0</p>
+                                            <p>P {{ number_format($savings, 2) }}</p>
                                             <p class="title">Username</p>
                                             <p>{{ \Illuminate\Support\Facades\Auth::guard('member')->user()->username }}</p>
                                             <p class="title">Position</p>
