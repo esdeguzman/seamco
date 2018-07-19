@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Comaker;
 use App\Member;
+use App\Share;
+use App\SharePayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +22,24 @@ class MembersController extends Controller
     public function show(Request $request) {
         $member = Member::find(Auth::guard('member')->user()->id);
 
+        // get current max share
+        $currentShare = Share::where('member_id', $member->id)->get()->last();
+
+        // get all share payments
+        $sharePayments = SharePayment::where('member_id', $member->id)->get();
+
+        // compute total share payments
+        $totalSharePayments = -1000;
+        foreach ($sharePayments as $sharePayment) {
+            if(is_null($sharePayment->remarks)) {
+                $totalSharePayments += $sharePayment->amount;
+            }
+        }
+
+        $savings = $currentShare->value - $totalSharePayments;
+
+        $savings < 0 ? $savings = $savings * -1 : $savings = 0;
+
         if(count($member->sharePayments) == 0) {
             $request->session()->flash('info', 'Your application review has not yet been completed, please try again some other time or contact us at 09282683776/413-2230, Thank you!');
             Auth::guard('member')->logout();
@@ -27,7 +47,7 @@ class MembersController extends Controller
             return back();
         }
 
-        return view('member.show', compact('logout', 'member'));
+        return view('member.show', compact('logout', 'member', 'sharePayments', 'savings', 'totalSharePayments'));
     }
 
     public function changePassword(Member $member, Request $request) {
