@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Admin;
 use App\Loan;
 use App\Member;
+use App\PromissoryNote;
 use App\Share;
 use App\SharePayment;
 use Illuminate\Http\Request;
@@ -95,8 +96,10 @@ class AdminsController extends Controller
 
         $savings < 0 ? $savings = $savings * -1 : $savings = 0;
 
-        $currentLoan = Loan::whereHas('promissoryNote', function($query) {
-            $query->where('settled', 0)->where('remarks', null);
+        $currentLoan = Loan::whereHas('promissoryNote', function($query) use ($member) {
+            $query->where('settled', 0)->where('remarks', null)
+                ->where('member_id', $member->id)
+                ->where('remarks', null);
         })->orderByDesc('created_at')->first();
 
         $latestPromise = null;
