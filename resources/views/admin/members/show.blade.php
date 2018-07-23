@@ -169,7 +169,7 @@
                                                             @if($payment->remarks)
                                                                 {{ $payment->remarks }}
                                                             @else
-                                                                <a href="{{ route('share-payment.edit', $member->id) }}"><span class="fa fa-comment"> Add Remarks</span></a>
+                                                                <a href="{{ route('share-payment.edit', $payment->id) }}"><span class="fa fa-comment"> Add Remarks</span></a>
                                                             @endif
                                                         </td>
                                                     </tr>
