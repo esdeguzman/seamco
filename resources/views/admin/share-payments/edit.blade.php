@@ -13,7 +13,7 @@
                     </div>
                     <div class="x_content">
                         <br />
-                        <form class="form-horizontal form-label-left" action="{{ route('share-payment.update', $sharePayment->member_id) }}" method="post">
+                        <form class="form-horizontal form-label-left" action="{{ route('share-payment.update', $sharePayment->id) }}" method="post">
                             {{ csrf_field() }} {{ method_field('put') }}
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
