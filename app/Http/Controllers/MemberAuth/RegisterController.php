@@ -6,6 +6,7 @@ use App\Admin;
 use App\Application;
 use App\Member;
 use App\Notifications\NewApplicationNotification;
+use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -143,5 +144,19 @@ class RegisterController extends Controller
     protected function guard()
     {
         return Auth::guard('member');
+    }
+
+    public function registered(Request $request, $user)
+    {
+        $request
+            ->session()
+            ->flash('info', "Your application has been sent, please take " .
+                            "note of your username {$user->username} and your password is your tin number " .
+                            "without the hypens (-) which can be changed afterwards. One of our team will " .
+                            "contact you after the administrators have approved your application, Thank you!");
+
+        Auth::guard('member')->logout();
+
+        return redirect('/member/login');
     }
 }
