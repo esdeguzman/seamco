@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MemberAuth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Hesto\MultiAuth\Traits\LogsoutGuard;
 
@@ -68,5 +69,20 @@ class LoginController extends Controller
 
     public function logoutToPath() {
         return url('member/login');
+    }
+
+    public function authenticated(Request $request, $user)
+    {
+        if ($user->sharePayments->count() == 0) {
+            $request
+                ->session()
+                ->flash('info', "Your initial payment have not yet been posted, if you think " .
+                                "this is taking too long, please contact us at +63 (032) 4132230 or " .
+                                "+639282683776. Thank you!");
+
+            Auth::guard('member')->logout();
+
+            return redirect('/member/login');
+        }
     }
 }
