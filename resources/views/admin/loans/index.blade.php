@@ -44,6 +44,8 @@
                                             <label class="label label-success text-uppercase">approved</label>
                                         @elseif($loan->status == 0)
                                             <label class="label label-danger text-uppercase">denied</label>
+                                        @elseif($loan->status == -1)
+                                            <label class="label label-warning text-uppercase">archived</label>
                                         @endif
                                     </td>
                                     <td>
