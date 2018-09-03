@@ -56,7 +56,7 @@ class LoansController extends Controller
         $loan = Loan::find($loan);
 
         if (is_null($loan)) {
-            \request()->session()->flash('info', 'The loan tha you are trying to view has already been deleted. Please contact us if you have additional questions.');
+            \request()->session()->flash('info', 'The loan that you are trying to view has already been deleted. Please contact us if you have additional questions.');
 
             return back();
         }
