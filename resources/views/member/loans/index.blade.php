@@ -53,6 +53,8 @@
                                                                 <span class="label label-danger text-uppercase">denied</span>
                                                             @elseif($loan->status == 1)
                                                                 <span class="label label-success text-uppercase">approved</span>
+                                                            @elseif($loan->status == -1)
+                                                                <label class="label label-warning text-uppercase">archived</label>
                                                             @endif
                                                         </td>
                                                         <td><a href="{{ route('loans.show', $loan->id) }}"><span class="fa fa-edit"> View</span></a></td>

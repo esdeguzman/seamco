@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comaker;
+use App\LoanPayment;
 use App\Member;
 use App\Share;
 use App\SharePayment;

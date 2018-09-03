@@ -111,8 +111,8 @@ class AdminsController extends Controller
         return view('admin.members.show', compact('member', 'savings', 'totalSharePayments', 'latestPromise', 'currentLoan'));
     }
 
-    public function loansIndex() {
-        $loans = Loan::all();
+    public function loansIndex(Request $request) {
+        $loans = Loan::where('status', $request->status)->get();
 
         return view('admin.loans.index', compact('loans'));
     }
