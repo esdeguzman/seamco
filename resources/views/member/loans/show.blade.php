@@ -233,7 +233,10 @@
                                             @else
                                                 P {{ number_format($loan->creditEvaluation->approved_amount + $loan->creditEvaluation->interest,2) }}
                                             @endif
-                                            @if(! is_null($loan->remarks))
+
+                                            @if($loan->status === -1)
+                                                <span class="label label-warning pull-right">Archived</span>
+                                            @elseif(! is_null($loan->remarks))
                                                 <span class="label label-danger pull-right">Denied</span>
                                             @elseif(is_null($loan->promissoryNote) && $loan->status != 1)
                                                 <span class="label label-warning pull-right">NOT YET APPROVED</span>

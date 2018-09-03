@@ -18,7 +18,7 @@ class LoansController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('member', ['except' => ['logout', 'update']]);
+        $this->middleware('member', ['except' => ['logout', 'update', 'delete', 'archive']]);
     }
 
     public function create() {
@@ -52,7 +52,15 @@ class LoansController extends Controller
         return view('member.loans.index', compact('member', 'loans', 'currentShare', 'totalSharePayments', 'savings'));
     }
 
-    public function show(Loan $loan) {
+    public function show($loan) {
+        $loan = Loan::find($loan);
+
+        if (is_null($loan)) {
+            \request()->session()->flash('info', 'The loan tha you are trying to view has already been deleted. Please contact us if you have additional questions.');
+
+            return back();
+        }
+
         return view('member.loans.show', compact('loan'));
     }
 
@@ -229,6 +237,26 @@ class LoansController extends Controller
         }
 
         $loan->save();
+
+        return back();
+    }
+
+    public function delete(Loan $loan, Request $request)
+    {
+        if ($request->process == 'delete') {
+            $loan->forceDelete();
+        }
+
+        return redirect()->route('admin.loans-index', ['status' => $request->status]);
+    }
+
+    public function archive(Loan $loan, Request $request)
+    {
+        if ($request->process == 'archive') {
+            $loan->status = -1;
+            $loan->remarks = 'Archived by ' . Auth::guard('admin')->user()->first_name;
+            $loan->save();
+        }
 
         return back();
     }

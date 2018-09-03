@@ -248,7 +248,10 @@
                                             @else
                                                 P {{ number_format($loan->creditEvaluation->approved_amount + $loan->creditEvaluation->interest,2) }}
                                             @endif
-                                            @if(! is_null($loan->remarks))
+
+                                            @if($loan->status === -1)
+                                                <span class="label label-warning pull-right">Archived</span>
+                                            @elseif(! is_null($loan->remarks))
                                                 <span class="label label-danger pull-right">Denied</span>
                                             @elseif(is_null($loan->promissoryNote) && $loan->status != 1)
                                                 <span class="label label-warning pull-right">NOT YET APPROVED</span>
@@ -258,6 +261,7 @@
                                                 <span class="label label-success pull-right">PAID</span>
                                             @endif
                                         </p>
+                                        @if($loan->status === -1 or $loan->status === 0) <b class="text-primary">Note: {{ $loan->remarks }}</b> @endif
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -267,6 +271,18 @@
                                 <div class="row no-print">
                                     <div class="col-xs-12">
 {{--                                        @if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id && is_null($loan->comaker->status))--}}
+                                        @if(! is_null($loan->status))
+                                            <form action="{{ route('loans.delete', $loan->id) }}?process=delete&status={{ $loan->status }}" method="post" class="pull-right">
+                                                {{ csrf_field() }} {{ method_field('put') }}
+                                                <button class="btn btn-danger pull-right text-uppercase" type="submit">Delete</button>
+                                            </form>
+                                        @endif
+                                        @if(! is_null($loan->status) and $loan->status != '-1')
+                                            <form action="{{ route('loans.archive', $loan->id) }}?process=archive" method="post" class="pull-right">
+                                                {{ csrf_field() }} {{ method_field('put') }}
+                                                <button class="btn btn-warning pull-right text-uppercase" type="submit">Archive</button>
+                                            </form>
+                                        @endif
                                         <form action="{{ route('admin.show-member', $loan->member->id) }}" method="get">
                                             <button class="btn btn-primary pull-right text-uppercase"type="submit">view member's information</button>
                                             {{--<input class="btn btn-danger pull-right col-md-3" value="DENY COMAKER REQUEST" name="response" type="submit"/>--}}
@@ -274,6 +290,7 @@
                                         {{--@endif--}}
                                         {{--<button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>--}}
                                         {{--<button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>--}}
+                                        @if(! is_null($loan->status)) <b class="text-danger pull-right">Warning! Deleting loan information will permanently remove its details from the system and cannot be undone.</b> @endif
                                     </div>
                                 </div>
                             </section>
