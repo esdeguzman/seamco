@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Comaker;
 use App\Loan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -27,7 +28,12 @@ class ComposerServiceProvider extends ServiceProvider
            ], function($view) {
            $view->with([
                'comakerRequests' => Comaker::where('member_id', Auth::guard('member')->user()->id),
-               'approvedLoans' => Loan::doesntHave('promissoryNote')->where('member_id', Auth::guard('member')->user()->id)->where('remarks', null)->where('status', '!=', null)->get(),
+               'approvedLoans' => Loan::doesntHave('promissoryNote')
+                                    ->where('member_id', Auth::guard('member')
+                                    ->user()->id)->where('remarks', null)
+                                    ->where('status', '!=', null)
+                                    ->whereDate('updated_at', '>=', Carbon::now()->subDays(5)->toDateTimeString())
+                                    ->get(),
            ]);
        });
     }
