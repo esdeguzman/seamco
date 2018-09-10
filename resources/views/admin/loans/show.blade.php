@@ -271,12 +271,10 @@
                                 <div class="row no-print">
                                     <div class="col-xs-12">
 {{--                                        @if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id && is_null($loan->comaker->status))--}}
-                                        @if(! is_null($loan->status))
-                                            <form action="{{ route('loans.delete', $loan->id) }}?process=delete&status={{ $loan->status }}" method="post" class="pull-right">
-                                                {{ csrf_field() }} {{ method_field('put') }}
-                                                <button class="btn btn-danger pull-right text-uppercase" type="submit">Delete</button>
-                                            </form>
-                                        @endif
+                                        <form action="{{ route('loans.delete', $loan->id) }}?process=delete&status={{ $loan->status }}" method="post" class="pull-right">
+                                            {{ csrf_field() }} {{ method_field('put') }}
+                                            <button class="btn btn-danger pull-right text-uppercase" type="submit">Delete</button>
+                                        </form>
                                         @if(! is_null($loan->status) and $loan->status != '-1')
                                             <form action="{{ route('loans.archive', $loan->id) }}?process=archive" method="post" class="pull-right">
                                                 {{ csrf_field() }} {{ method_field('put') }}
