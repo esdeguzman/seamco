@@ -17,7 +17,7 @@ class MembersController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('member', ['except' => 'logout']);
+        $this->middleware('member', ['except' => ['logout','updatePhoto']]);
     }
 
     public function show(Request $request) {
@@ -77,6 +77,22 @@ class MembersController extends Controller
             $request->session()->flash('success', 'You have successfully uploaded your photo!');
 
             return redirect()->route('members.show', $member->id);
+        }
+    }
+
+    public function updatePhoto(Member $member, Request $request) {
+        if($request->file('photo')) {
+            if(! is_null($member->photo_url)) {
+                unlink( str_replace('\\', '/', public_path('storage')) .'/'. $member->photo_url);
+            }
+
+            $path = Storage::putFile('photos', new File($request->file('photo')));
+            $member->photo_url = $path;
+            $member->save();
+
+            $request->session()->flash('success', 'You have successfully uploaded the photo!');
+
+            return redirect()->route('admin.show-member', $member->id);
         }
     }
 }

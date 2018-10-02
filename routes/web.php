@@ -18,6 +18,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::put('/update-member-info/{member}', 'AdminsController@updateMemberInfo')->name('admins.update-member-info');
     Route::get('/update-member-share-payment/{sharePayment}', 'SharePaymentsController@edit')->name('share-payment.edit');
     Route::put('/update-member-share-payment/{sharePayment}', 'SharePaymentsController@update')->name('share-payment.update');
+    Route::put('/{member}/update-photo', 'MembersController@updatePhoto')->name('members.update-photo');
     Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
     Route::post('/login', 'AdminAuth\LoginController@login');
     Route::post('/logout', 'AdminAuth\LoginController@logout')->name('logout');

@@ -254,7 +254,9 @@
 
                                     <div class="x_title">
                                         <h2>User Information</h2>
-                                        <div class="clearfix"></div>
+                                        <div class="clearfix">
+                                            <img src="{{ url('/storage') .'/'. $member->photo_url }}" alt="..." class="img-circle profile_img">
+                                        </div>
                                     </div>
                                     <div class="panel-body">
                                         <h3 class="green">{{ $member->full_name }}</h3>
@@ -283,6 +285,18 @@
                                             <p class="title">Present Address</p>
                                             <p>{{ $member->present_address }}</p>
                                         </div>
+
+                                        <br />
+                                        <h5>Upload/Change Photo</h5>
+                                        <form class="form" action="{{ route('members.update-photo', $member->id) }}" method="post" enctype="multipart/form-data">
+                                            {{ csrf_field() }} {{ method_field('put') }}
+                                            <div class="input-group">
+                                                <input type="file" class="form-control" name="photo"/>
+                                                <span class="input-group-btn">
+                                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                                </span>
+                                            </div>
+                                        </form>
 
                                         <br />
                                         <h5>Update Share Value</h5>
