@@ -100,6 +100,7 @@
                                                 <tbody>
                                                 @if(! is_null($comakerRequests->get()))
                                                     @foreach($comakerRequests->get() as $comakerRequest)
+                                                    @if(is_null($comakerRequest->loan)) @continue @endif
                                                         <tr>
                                                             <td>{{ $comakerRequest->requestedBy->full_name }}</td>
                                                             <td>P {{ number_format($comakerRequest->loan->total_amount, 2) }}</td>
