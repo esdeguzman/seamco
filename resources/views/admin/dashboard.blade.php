@@ -51,7 +51,7 @@
                     <div class="x_content">
                         @if($applicants->count() > 0)
                             @foreach($applicants->sortByDesc('created_at') as $applicant)
-                            @if($applicant->application->approved == 0) @continue @endif
+                            @if($applicant->application->approved === 0) @continue @endif
                             <article class="media event">
                                 <a class="pull-left date">
                                     <p class="month">{{ \Carbon\Carbon::parse($applicant->created_at)->format('F') }}</p>
