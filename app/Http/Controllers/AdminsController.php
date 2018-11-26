@@ -67,7 +67,9 @@ class AdminsController extends Controller
         }
     }
 
-    public function reviewApplicant(Member $applicant) {
+    public function reviewApplicant($applicant) {
+        $applicant = Member::find($applicant);
+
         return view('admin.layout.applicant', compact('applicant'));
     }
 

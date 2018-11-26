@@ -39,6 +39,16 @@ class ApplicationsController extends Controller
             $application->share_cert_given = 1;
             $application->share_cert_given_by = Auth::guard('admin')->user()->id;
             $application->share_cert_release_date = Carbon::now()->toDateString();
+        } else if ($request->disapproval_reason) {
+            $application->approved = 0;
+            $application->disapproval_reason = $request->disapproval_reason;
+            $application->disapproved_by = Auth::guard('admin')->user()->id;
+            $application->save();
+
+            // soft delete applicant
+            $application->delete();
+
+            return back();
         }
 
         $application->save();

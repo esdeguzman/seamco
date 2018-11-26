@@ -29,10 +29,14 @@
                                                 {{ csrf_field() }} {{ method_field('put') }}
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    @if(! is_null($applicant->application->approved))
-                                                        <h4 class="text text-uppercase">member has been approved by : {{ $applicant->application->approvedBy->first_name }}</h4>
+                                                    @if($applicant->application->approved == 1)
+                                                        <h4 class="text text-uppercase">member has been approved by : 
+                                                            @if($applicant->application->approvedBy)
+                                                                {{ $applicant->application->approvedBy->first_name }}
+                                                            @endif
+                                                        </h4>
                                                     @else
-                                                        <input class="btn btn-block btn-primary" value="APPROVE APPLICATION" name="action" type="submit">
+                                                        <input class="btn btn-block btn-primary" value="APPROVE APPLICATION" name="action" type="submit" {{ $applicant->application->approved ? '' : 'disabled' }}>
                                                     @endif
                                                     <br>
                                                     @if(! is_null($applicant->application->attended_pmes))
@@ -61,8 +65,15 @@
                                                 </div>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    <textarea name="disapproval_reason" class="form-control" rows="2" {{ $applicant->application->approved ? 'disabled' : '' }}></textarea><br/>
-                                                    <button class="btn btn-block btn-danger" {{ $applicant->application->approved ? 'disabled' : '' }}>DISAPPROVE APPLICATION</button>
+                                                    @if(is_null($applicant->application->approved))
+                                                        <textarea name="disapproval_reason" class="form-control" rows="2" {{ $applicant->application->approved ? 'disabled' : '' }}></textarea><br/>
+                                                        <button class="btn btn-block btn-danger">DISAPPROVE APPLICATION</button>
+                                                    @elseif($applicant->application->approved == 1)
+                                                        <h1>Application has already been approved!</h1>
+                                                    @else
+                                                        <h1 class="text-danger">Application has already been disapproved because of the following reason/s:</h1>
+                                                        <h1>{{ $applicant->application->disapproval_reason }}</h1>
+                                                    @endif
                                                 </div>
 
                                                 @if($applicant->application->attended_pmes && count($applicant->shares) == 0)
@@ -120,6 +131,8 @@
                                             <p>{{ $applicant->department }}</p>
                                             <p class="title">Employer</p>
                                             <p>{{ $applicant->employer }}</p>
+                                            <p class="title">TIN</p>
+                                            <p>{{ $applicant->tax_identification_number }}</p>
                                             <p class="title">Employment Date</p>
                                             <p>{{ $applicant->employment_date }}</p>
                                             <p class="title">Employer Address</p>
