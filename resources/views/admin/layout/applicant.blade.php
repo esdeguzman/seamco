@@ -35,8 +35,10 @@
                                                                 {{ $applicant->application->approvedBy->first_name }}
                                                             @endif
                                                         </h4>
+                                                    @elseif($applicant->application->approved === 0)
+                                                        <input class="btn btn-block btn-danger" value="DENIED BY: {{ $applicant->application->disapprovedBy->first_name .' '. $applicant->application->disapprovedBy->last_name }}" disabled>
                                                     @else
-                                                        <input class="btn btn-block btn-primary" value="APPROVE APPLICATION" name="action" type="submit" {{ is_null($applicant->application->approved) ? '' : 'disabled' }}>
+                                                        <input class="btn btn-block btn-primary" value="APPROVE APPLICATION" name="action" type="submit" {{ is_null($applicant->application->approved) ? '' : 'disabled' }} >
                                                     @endif
                                                     <br>
                                                     @if(! is_null($applicant->application->attended_pmes))
@@ -66,7 +68,7 @@
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                                                     @if(is_null($applicant->application->approved))
-                                                        <textarea name="disapproval_reason" class="form-control" rows="2" {{ $applicant->application->approved ? 'disabled' : '' }}></textarea><br/>
+                                                        <textarea name="disapproval_reason" class="form-control" rows="2" {{ $applicant->application->approved ? 'disabled' : '' }} placeholder="Disapproval reason is required for the denial of an applicant"></textarea><br/>
                                                         <button class="btn btn-block btn-danger">DISAPPROVE APPLICATION</button>
                                                     @elseif($applicant->application->approved == 1)
                                                         <h1>Application has already been approved!</h1>

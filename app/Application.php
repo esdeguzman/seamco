@@ -19,6 +19,10 @@ class Application extends Model
         return $this->belongsTo(Admin::class, "approved_by");
     }
 
+    public function disapprovedBy() {
+        return $this->belongsTo(Admin::class, "disapproved_by");
+    }
+
     public function attendanceVerifiedBy() {
         return $this->belongsTo(Admin::class, "attendance_verified_by");
     }

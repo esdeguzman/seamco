@@ -40,6 +40,10 @@ class ApplicationsController extends Controller
             $application->share_cert_given_by = Auth::guard('admin')->user()->id;
             $application->share_cert_release_date = Carbon::now()->toDateString();
         } else if ($request->disapproval_reason) {
+            $this->validate($request, [
+                'disapproval_reason' => 'required'
+            ]);
+
             $application->approved = 0;
             $application->disapproval_reason = $request->disapproval_reason;
             $application->disapproved_by = Auth::guard('admin')->user()->id;
