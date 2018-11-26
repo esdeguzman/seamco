@@ -36,7 +36,7 @@
                                                             @endif
                                                         </h4>
                                                     @else
-                                                        <input class="btn btn-block btn-primary" value="APPROVE APPLICATION" name="action" type="submit" {{ $applicant->application->approved ? '' : 'disabled' }}>
+                                                        <input class="btn btn-block btn-primary" value="APPROVE APPLICATION" name="action" type="submit" {{ is_null($applicant->application->approved) ? '' : 'disabled' }}>
                                                     @endif
                                                     <br>
                                                     @if(! is_null($applicant->application->attended_pmes))
