@@ -224,5 +224,7 @@
             {{--alert('Your application has not been finalized!')--}}
             {{--$('#logout').submit()--}}
         {{--@endif--}}
+
+        $('#datatable-responsive, #datatable').dataTable( { "bSort" : false } );
     </script>
 @stop

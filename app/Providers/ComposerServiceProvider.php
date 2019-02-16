@@ -27,7 +27,7 @@ class ComposerServiceProvider extends ServiceProvider
                'member.loans.create',
            ], function($view) {
            $view->with([
-               'comakerRequests' => Comaker::where('member_id', Auth::guard('member')->user()->id),
+               'comakerRequests' => Comaker::has('loan')->where('member_id', Auth::guard('member')->user()->id)->orderBy('created_at', 'desc'),
                'approvedLoans' => Loan::doesntHave('promissoryNote')
                                     ->where('member_id', Auth::guard('member')
                                     ->user()->id)->where('remarks', null)

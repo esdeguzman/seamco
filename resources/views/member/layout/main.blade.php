@@ -116,8 +116,8 @@
                                 </span>
                             </a>
                             <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                @if($comakerRequests->where('status', null)->count() > 0)
-                                @foreach($comakerRequests->where('status', '===', null)->get() as $comakerRequest)
+                                @if($comakerRequests->where('status', '===', null)->count() > 0)
+                                @foreach($comakerRequests->where('status', null)->get() as $comakerRequest)
                                     <li>
                                         <a href="{{ route('loans.show', $comakerRequest->loan_id) }}">
                                             <span class="image">
