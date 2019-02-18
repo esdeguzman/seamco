@@ -114,7 +114,19 @@ class AdminsController extends Controller
     }
 
     public function loansIndex(Request $request) {
-        $loans = Loan::where('status', $request->status)->get();
+        $loans = null;
+
+        if ($request->status != 2 and $request->status != 1) {
+            $loans = Loan::where('status', $request->status)->get();
+        } else if ($request->status == 1) {
+            $loans = Loan::whereHas('promissoryNote', function ($query) {
+                $query->where('settled', 0);
+            })->get();
+        } else {
+            $loans = Loan::whereHas('promissoryNote', function ($query) {
+                $query->where('settled', 1);
+            })->get();
+        }
 
         return view('admin.loans.index', compact('loans'));
     }

@@ -12,10 +12,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_content">
-                        <h2>Approved Loans</h2>
-                        <p class="text-muted font-13 m-b-30">
-                            The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
-                        </p>
+                        <h2>Loans</h2>
                         <table id="datatable-buttons" class="table table-striped table-bordered">
                             <thead>
                             <tr>
@@ -40,6 +37,8 @@
                                     <td>
                                         @if(is_null($loan->status))
                                             <label class="label label-warning text-uppercase">pending</label>
+                                        @elseif(! is_null($loan->promissoryNote) and $loan->promissoryNote->settled == 1)
+                                            <label class="label label-success text-uppercase">fully paid</label>
                                         @elseif($loan->status == 1)
                                             <label class="label label-success text-uppercase">approved</label>
                                         @elseif($loan->status == 0)

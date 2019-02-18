@@ -32,7 +32,7 @@ class LoanPaymentsController extends Controller
                 }
             }
 
-            LoanPayment::create([
+            $payment = LoanPayment::create([
                 'loan_id' => $loan->id,
                 'member_id' => $loan->member_id,
                 'promise_id' => $promise->id,
@@ -43,6 +43,13 @@ class LoanPaymentsController extends Controller
 
             $promise->status = 1;
             $promise->save();
+
+            $promissoryNote = $promise->promissoryNote;
+
+            if ($payment->loan_balance == 0) {
+                $promissoryNote->settled = 1;
+                $promissoryNote->save();
+            }
 
             $request->session()->flash('info', 'You have successfully received members\'s loan payment!');
         } else {

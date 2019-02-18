@@ -214,7 +214,7 @@
                                             <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                                 <thead>
                                                 <tr>
-                                                    <th>Loan ID</th>
+                                                    <th>Payment ID</th>
                                                     <th>Amount</th>
                                                     <th>Balance</th>
                                                     <th>Received By</th>

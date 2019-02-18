@@ -65,3 +65,13 @@ Route::group(['prefix' => 'member'], function () {
     Route::get('/promissory-note/create/{loan}', 'PromissoryNotesController@create')->name('promissory-note.create');
     Route::post('/promises/store/{promissoryNote}', 'PromisesController@store')->name('promises.store');
 });
+
+Route::get('paid', function() {
+    $paid = App\LoanPayment::where('loan_balance', 0)->get();
+
+    foreach ($paid as $pay) {
+        $note = $pay->promise->promissoryNote;
+        $note->settled = 1;
+        $note->save();
+    }
+});
