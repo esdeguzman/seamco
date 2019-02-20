@@ -98,19 +98,21 @@ class AdminsController extends Controller
 
         $savings < 0 ? $savings = $savings * -1 : $savings = 0;
 
-        $currentLoan = Loan::whereHas('promissoryNote', function($query) use ($member) {
+        $currentLoans = Loan::whereHas('promissoryNote', function($query) use ($member) {
             $query->where('settled', 0)->where('remarks', null)
                 ->where('member_id', $member->id)
                 ->where('remarks', null);
-        })->orderByDesc('created_at')->first();
+        })->orderByDesc('created_at')->get();
 
-        $latestPromise = null;
+        $latestPromises = [];
 
-        if(! is_null($currentLoan)) {
-            $latestPromise = $currentLoan->promissoryNote->promises->where('carbonated_date', $currentLoan->promissoryNote->promises->where('status', 0)->min('carbonated_date'))->first();
+        foreach($currentLoans as $currentLoan) {
+            if(! is_null($currentLoan)) {
+            $latestPromises[] = $currentLoan->promissoryNote->promises->where('carbonated_date', $currentLoan->promissoryNote->promises->where('status', 0)->min('carbonated_date'))->first();
+            }
         }
 
-        return view('admin.members.show', compact('member', 'savings', 'totalSharePayments', 'latestPromise', 'currentLoan'));
+        return view('admin.members.show', compact('member', 'savings', 'totalSharePayments', 'latestPromises', 'currentLoans'));
     }
 
     public function loansIndex(Request $request) {
