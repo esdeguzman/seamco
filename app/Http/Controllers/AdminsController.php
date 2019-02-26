@@ -123,11 +123,11 @@ class AdminsController extends Controller
         } else if ($request->status == 1) {
             $loans = Loan::whereHas('promissoryNote', function ($query) {
                 $query->where('settled', 0);
-            })->get();
+            })->orWhere('status', 1)->get();
         } else {
             $loans = Loan::whereHas('promissoryNote', function ($query) {
                 $query->where('settled', 1);
-            })->get();
+            })->orWhere('status', 2)->get();
         }
 
         return view('admin.loans.index', compact('loans'));
