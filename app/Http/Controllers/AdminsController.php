@@ -10,6 +10,7 @@ use App\Share;
 use App\SharePayment;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -39,32 +40,66 @@ class AdminsController extends Controller
     }
 
     public function update(Admin $admin, Request $request) {
-        if($request->file('photo')) {
-            if(! is_null($admin->photo_url)) {
-                unlink( str_replace('\\', '/', public_path('storage')) .'/'. $admin->photo_url);
+        if (auth()->guard('admin')->user()->id == $admin->id) {
+            if ($request->file('photo')) {
+                if(! is_null($admin->photo_url)) {
+                    unlink( str_replace('\\', '/', public_path('storage')) .'/'. $admin->photo_url);
+                }
+
+                    $path = Storage::putFile('photos', new File($request->file('photo')));
+                    $admin->photo_url = $path;
+                    $admin->save();
+
+                    $request->session()->flash('success', 'You have successfully uploaded your photo!');
+            } else {
+                $this->validate($request,
+                [
+                    'contact_number' => 
+                    array(
+                        'required',
+                        Rule::unique('admins')->ignore($admin->id),
+                        'regex:/^((0|\+63)9\d{9})$/'
+                    ),
+                    'address' => 'required',
+                    'email' => 
+                    array(
+                        'required',
+                        Rule::unique('admins')->ignore($admin->id)
+                    ),
+                    'position' => 'required'
+                ],
+                [
+                    'contact_number.regex' => 'Mobile number is invalid. Please make sure to use formats +639187263746 or 09187263746'
+                ]);
+
+                $admin->contact_number = $request->contact_number;
+                $admin->save();
+
+
+                $request->session()->flash('success', 'You have successfully updated your profile information!');
             }
-
-            $path = Storage::putFile('photos', new File($request->file('photo')));
-            $admin->photo_url = $path;
-            $admin->save();
-
-            $request->session()->flash('success', 'You have successfully uploaded your photo!');
-
-            return redirect()->route('admin.show', $admin->id);
+        } else {
+            $request->session()->flash('info', 'The profile you are trying to update is not yours. Process aborted!');
         }
+
+        return redirect()->route('admin.show', $admin->id);
     }
 
     public function changePassword(Admin $admin, Request $request) {
-        if(Hash::check($request->old_password, $admin->password)) {
-            $admin->password = bcrypt($request->password);
-            $admin->save();
+        if (auth()->guard('admin')->user()->id == $admin->id) {
+            if(Hash::check($request->old_password, $admin->password)) {
+                $admin->password = bcrypt($request->password);
+                $admin->save();
 
-            $request->session()->flash('success', 'You have successfully changed your password!');
-            return redirect()->route('admin.show', $admin->id);
+                $request->session()->flash('success', 'You have successfully changed your password!');
+            } else {
+                $request->session()->flash('passwordError', 'Passwords did not match!');
+            }
         } else {
-            $request->session()->flash('passwordError', 'Old password did not match!');
-            return redirect()->route('admin.show', $admin->id);
+            $request->session()->flash('info', 'The profile you are trying to update is not yours. Process aborted!');
         }
+
+        return redirect()->route('admin.show', $admin->id);
     }
 
     public function reviewApplicant($applicant) {
