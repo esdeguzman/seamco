@@ -22,6 +22,13 @@ class AdminsController extends Controller
         $this->middleware('admin', ['except' => 'logout']);
     }
 
+    public function index()
+    {
+        $admins = Admin::all();
+
+        return view('admin.index', compact('admins'));
+    }
+
     public function dashboard() {
         $members = Member::whereHas('shares')->get();
         $applicants = Member::whereHas('application', function ($query) {

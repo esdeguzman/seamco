@@ -53,6 +53,7 @@
                         <h3>Navigation</h3>
                         <ul class="nav side-menu">
                             <li @yield('dashboard')><a href="{{ url('/admin/dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard </a></li>
+                            <li @yield('admins')><a href="{{ route('admins.index') }}"><i class="fa fa-lock"></i> Admins </a></li>
                             <li @yield('my-profile')><a href="{{ route('admin.show', \Illuminate\Support\Facades\Auth::guard('admin')->user()->id) }}"><i class="fa fa-user"></i> My Profile <span class="label label-success pull-right">UPDATED</span></a></li>
                             <li @yield('members')><a><i class="fa fa-users"></i> Members <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">

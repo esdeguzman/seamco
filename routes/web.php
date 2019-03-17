@@ -32,6 +32,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/password/reset/{token}', 'AdminAuth\ResetPasswordController@showResetForm');
 
     Route::get('/dashboard', 'AdminsController@dashboard')->name('admin.dashboard');
+    Route::get('/index', 'AdminsController@index')->name('admins.index');
     Route::get('/{admin}', 'AdminsController@show')->name('admin.show');
     Route::get('/review-applicant/{applicant}', 'AdminsController@reviewApplicant')->name('admin.review-applicant');
     Route::put('/applicant/{applicant}', 'ApplicationsController@update')->name('applications.update');
