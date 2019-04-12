@@ -143,6 +143,13 @@
 
                                         <div class="project_detail">
 
+                                            <p class="title">Referred By</p>
+                                            <p>
+                                                @if(\Illuminate\Support\Facades\Auth::guard('member')->user()->referred_by)
+                                                {{ \Illuminate\Support\Facades\Auth::guard('member')->user()->referred_by  }}
+                                                @else None
+                                                @endif
+                                            </p>
                                             <p class="title">Code</p>
                                             <p>{{ \Illuminate\Support\Facades\Auth::guard('member')->user()->code }}</p>
                                             <p class="title">Total Share Payments</p>
@@ -157,6 +164,13 @@
                                             <p>{{ \Illuminate\Support\Facades\Auth::guard('member')->user()->position }}</p>
                                             <p class="title">Mobile Number</p>
                                             <p>{{ \Illuminate\Support\Facades\Auth::guard('member')->user()->mobile_number }}</p>
+                                            <p class="title">Email Adress</p>
+                                            <p>
+                                                @if(\Illuminate\Support\Facades\Auth::guard('member')->user()->email)
+                                                {{ \Illuminate\Support\Facades\Auth::guard('member')->user()->email  }}
+                                                @else None
+                                                @endif
+                                            </p>
                                             <p class="title">Present Address</p>
                                             <p>{{ \Illuminate\Support\Facades\Auth::guard('member')->user()->present_address }}</p>
                                         </div>

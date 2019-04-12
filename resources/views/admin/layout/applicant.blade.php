@@ -67,6 +67,9 @@
                                                 </div>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                                    <h4 class="text-danger">Referred By:</h1>
+                                                    <h5>{{ $member->referred_by or 'NONE' }}</h1>
+                                                    <hr>
                                                     @if(is_null($applicant->application->approved))
                                                         <textarea name="disapproval_reason" class="form-control" rows="2" {{ $applicant->application->approved ? 'disabled' : '' }} placeholder="Disapproval reason is required for the denial of an applicant"></textarea><br/>
                                                         <button class="btn btn-block btn-danger">DISAPPROVE APPLICATION</button>
@@ -121,6 +124,8 @@
                                             <p>{{ $applicant->birth_date }}</p>
                                             <p class="title">Mobile Number</p>
                                             <p>{{ $applicant->mobile_number }}</p>
+                                            <p class="title">Email Address</p>
+                                            <p>{{ $applicant->email or 'NONE' }}</p>
                                             <p class="title">Gender</p>
                                             <p>{{ $applicant->gender }}</p>
                                             <p class="title">Present Address</p>

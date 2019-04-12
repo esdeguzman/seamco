@@ -61,6 +61,12 @@
                                                     <span class="fa fa-mobile-phone form-control-feedback right" aria-hidden="true"></span>
                                                 </div>
 
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                                    <input type="text" class="form-control has-feedback-left" placeholder="Email Address" name="email" value="{{ $member->email }}" />
+                                                    <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                                                    {{ $errors->first('email') }}
+                                                </div>
+
                                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                                     <textarea class="form-control" name="present_address" rows="2" style="resize: none" placeholder="Present Address">{{ $member->present_address }}</textarea>
                                                 </div>
@@ -276,6 +282,9 @@
 
                                         <div class="project_detail">
 
+
+                                            <p class="title">Referred By</p>
+                                            <p>{{ $member->referred_by or 'None' }}</p>
                                             <p class="title">Code</p>
                                             <p>{{ $member->code }}</p>
                                             <p class="title">Total Share Payments</p>

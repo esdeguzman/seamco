@@ -3,13 +3,14 @@
 namespace App;
 
 use App\Notifications\MemberResetPassword;
+use App\Traits\Historiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Member extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, Historiable;
 
     protected $guarded = [];
 

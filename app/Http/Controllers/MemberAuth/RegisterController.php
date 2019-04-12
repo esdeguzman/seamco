@@ -69,7 +69,9 @@ class RegisterController extends Controller
             'salary' => 'required',
             'employer_address' => 'required',
             'other_source_of_income' => 'required',
-            'number_of_dependents' => 'required'
+            'number_of_dependents' => 'required',
+            'email' => 'required|unique:members,email',
+            'referred_by' => 'required'
         ]);
     }
 
@@ -87,26 +89,27 @@ class RegisterController extends Controller
         $data['username'] = strtolower($full_name[0]) .'0'. random_int(1, 99);
         $data['password'] = bcrypt(str_replace('-', '', $data['tax_identification_number']));
 
-        $member = Member::create([
-            'full_name' => $data['full_name'],
-            'civil_status' => $data['civil_status'],
-            'birth_date' => $data['birth_date'],
-            'mobile_number' => $data['mobile_number'],
-            'gender' => $data['gender'],
-            'present_address' => $data['present_address'],
-            'permanent_address' => $data['permanent_address'],
-            'employer' => $data['employer'],
-            'tax_identification_number' => $data['tax_identification_number'],
-            'position' => $data['position'],
-            'department' => $data['department'],
-            'employment_date' => $data['employment_date'],
-            'salary' => $data['salary'],
-            'employer_address' => $data['employer_address'],
-            'other_source_of_income' => $data['other_source_of_income'],
-            'number_of_dependents' => $data['number_of_dependents'],
-            'username' => $data['username'],
-            'password' => $data['password'],
-        ]);
+        $member = new Member();
+        $member->full_name = $data['full_name'];
+        $member->civil_status = $data['civil_status'];
+        $member->birth_date = $data['birth_date'];
+        $member->mobile_number = $data['mobile_number'];
+        $member->gender = $data['gender'];
+        $member->present_address = $data['present_address'];
+        $member->permanent_address = $data['permanent_address'];
+        $member->employer = $data['employer'];
+        $member->tax_identification_number = $data['tax_identification_number'];
+        $member->position = $data['position'];
+        $member->department = $data['department'];
+        $member->employment_date = $data['employment_date'];
+        $member->salary = $data['salary'];
+        $member->employer_address = $data['employer_address'];
+        $member->other_source_of_income = $data['other_source_of_income'];
+        $member->number_of_dependents = $data['number_of_dependents'];
+        $member->username = $data['username'];
+        $member->password = $data['password'];
+        $member->email = $data['email'];
+        $member->referred_by = $data['referred_by'];
 
         // set member code
         $member->code = 'M' . substr(str_replace('/', '', $data['birth_date']), 0, 4) . str_pad($member->id, 4, '0', STR_PAD_LEFT);

@@ -28,8 +28,11 @@
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
                                             <div class="panel-body">
-                                                <form action="{{ route('admin.update', $admin->id) }}" method="post">
+                                                <form 
+                                                    @if(auth()->guard('admin')->user()->id == $admin->id)
+                                                    action="{{ route('admin.update', $admin->id) }}" method="post">
                                                     {{ csrf_field() }} {{ method_field('put') }}
+                                                    @endif
                                                     <h3 class="green">
                                                         {{ $admin->first_name }} {{ $admin->middle_name }} {{ $admin->last_name }}
                                                     </h3>
@@ -63,34 +66,37 @@
                                                         </p>
 
                                                     </div>
-                                                    <button class="btn btn-primary">Update Profile Information</button>
+                                                    @if(auth()->guard('admin')->user()->id == $admin->id)
+                                                        <button class="btn btn-primary">Update Profile Information</button>
+                                                    @endif
                                                 </form>
+                                                @if(auth()->guard('admin')->user()->id == $admin->id)
+                                                    <br />
+                                                    <h5>Upload/Change Photo</h5>
+                                                    <form class="form" action="{{ route('admin.update', $admin->id) }}" method="post" enctype="multipart/form-data">
+                                                        {{ csrf_field() }} {{ method_field('put') }}
+                                                        <div class="input-group">
+                                                            <input type="file" class="form-control" name="photo"/>
+                                                            <span class="input-group-btn">
+                                                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                                            </span>
+                                                        </div>
+                                                    </form>
 
-                                                <br />
-                                                <h5>Upload/Change Photo</h5>
-                                                <form class="form" action="{{ route('admin.update', $admin->id) }}" method="post" enctype="multipart/form-data">
-                                                    {{ csrf_field() }} {{ method_field('put') }}
-                                                    <div class="input-group">
-                                                        <input type="file" class="form-control" name="photo"/>
-                                                        <span class="input-group-btn">
-                                                              <button type="submit" class="btn btn-primary">Submit</button>
-                                                        </span>
-                                                    </div>
-                                                </form>
-
-                                                <br />
-                                                <h5>Change Password</h5>
-                                                <form class="form" action="{{ route('admin.change-password', $admin->id) }}" method="post">
-                                                    {{ csrf_field() }} {{ method_field('put') }}
-                                                    <input class="form-control" type="password" placeholder="Old password" name="old_password"><br/>
-                                                    <input class="form-control" type="password" placeholder="New password" name="password"><br/>
-                                                    <div class="input-group">
-                                                        <input type="password" class="form-control" placeholder="Confirm password" name="password_confirmation"/>
-                                                        <span class="input-group-btn">
-                                                              <button type="submit" class="btn btn-primary">Submit</button>
-                                                        </span>
-                                                    </div>
-                                                </form>
+                                                    <br />
+                                                    <h5>Change Password</h5>
+                                                    <form class="form" action="{{ route('admin.change-password', $admin->id) }}" method="post">
+                                                        {{ csrf_field() }} {{ method_field('put') }}
+                                                        <input class="form-control" type="password" placeholder="Old password" name="old_password"><br/>
+                                                        <input class="form-control" type="password" placeholder="New password" name="password"><br/>
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control" placeholder="Confirm password" name="password_confirmation"/>
+                                                            <span class="input-group-btn">
+                                                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                                            </span>
+                                                        </div>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

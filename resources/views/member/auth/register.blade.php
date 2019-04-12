@@ -119,11 +119,14 @@
                     <label>Number of Dependents</label>
                     <input class="uk-input dependents {{ $errors->has('number_of_dependents') ? 'uk-form-danger' : '' }}" type="text" name="number_of_dependents" value="{{ old('number_of_dependents') }}">
                 </div>
-                {{--<div class="uk-width-1-1@s">--}}
-                    {{--<label>Paid Amount</label>--}}
-                    {{--<input class="uk-input salary" type="text" name="amount" value="{{ old('amount') }}">--}}
-                    {{--@if($errors->amount) <span class="uk-text-danger uk-text-small">{{ $errors->first() }}</span> @endif--}}
-                {{--</div>--}}
+                <div class="uk-width-1-2@s">
+                    <label>Email Address</label>
+                    <input class="uk-input {{ $errors->has('email') ? 'uk-form-danger' : '' }}" type="email" name="email" value="{{ old('email') }}">
+                </div>
+                <div class="uk-width-1-2@s">
+                    <label>Referred By</label>
+                    <input class="uk-input {{ $errors->has('referred_by') ? 'uk-form-danger' : '' }}" type="text" name="referred_by" value="{{ old('referred_by') }}" placeholder="Indicate NONE if not referred">
+                </div>
                 <label class="uk-align-center uk-margin-medium-top uk-text-primary uk-text-bold">Thrift. Respect. Unity. Service. Transparency.</label>
             </form>
         </div>
