@@ -8,7 +8,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/loans', 'AdminsController@loansIndex')->name('admin.loans-index');
     Route::get('/loans/{loan}', 'AdminsController@showLoan')->name('admin.loan-show');
     Route::put('/loans/{loan}', 'LoansController@update')->name('loans.update');
-    Route::put('/loans/{loan}/delete', 'LoansController@delete')->name('loans.delete');
+    Route::delete('/loans/{loan}/delete', 'LoansController@delete')->name('loans.delete');
     Route::put('/loans/{loan}/archive', 'LoansController@archive')->name('loans.archive');
     Route::post('/loan-payments/{loan}/{promise}', 'LoanPaymentsController@store')->name('loan-payments.store');
     Route::get('/approved-members', 'AdminsController@approvedMembers')->name('admin.approved-members');

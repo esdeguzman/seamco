@@ -67,12 +67,10 @@ class LoginController extends Controller
         return 'username';
     }
 
-    public function logoutToPath() {
-        return url('member/login');
-    }
-
     public function authenticated(Request $request, $user)
     {
+        $this->guard()->user()->makeHistory('logged in');
+
         if ($user->sharePayments->count() == 0) {
             $request
                 ->session()
@@ -84,5 +82,20 @@ class LoginController extends Controller
 
             return redirect('/member/login');
         }
+    }
+
+    public function logoutToPath() {
+        return url('member/login');
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->user()->makeHistory('logged out');
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/');
     }
 }

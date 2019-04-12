@@ -271,10 +271,6 @@
                                 <div class="row no-print">
                                     <div class="col-xs-12">
 {{--                                        @if($loan->comaker->member_id == \Illuminate\Support\Facades\Auth::guard('member')->user()->id && is_null($loan->comaker->status))--}}
-                                        <form action="{{ route('loans.delete', $loan->id) }}?process=delete&status={{ $loan->status }}" method="post" class="pull-right">
-                                            {{ csrf_field() }} {{ method_field('put') }}
-                                            <button class="btn btn-danger pull-right text-uppercase" type="submit">Delete</button>
-                                        </form>
                                         @if(! is_null($loan->status) and $loan->status != '-1')
                                             <form action="{{ route('loans.archive', $loan->id) }}?process=archive" method="post" class="pull-right">
                                                 {{ csrf_field() }} {{ method_field('put') }}
@@ -288,7 +284,16 @@
                                         {{--@endif--}}
                                         {{--<button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>--}}
                                         {{--<button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>--}}
-                                        @if(! is_null($loan->status)) <b class="text-danger pull-right">Warning! Deleting loan information will permanently remove its details from the system and cannot be undone.</b> @endif
+                                        <form action="{{ route('loans.delete', $loan->id) }}?process=delete&status={{ $loan->status }}" method="post">
+                                            {{ csrf_field() }} {{ method_field('delete') }}
+                                            <b class="text-danger col-md-8 pull-right" style="margin-bottom: 5px;">
+                                                @if($errors->has('remarks')) {{ $errors->first('remarks') }}
+                                                @else Warning! Deleting loan information will permanently remove its details from the system and cannot be undone.
+                                                @endif
+                                            </b>
+                                            <textarea class="col-md-8 pull-right" style="margin-bottom: 5px; margin-right: 5px" rows="4" name="remarks" placeholder="Deleting loan requires a reason. Please provide it here.">{{ old('remarks') }}</textarea>
+                                            <button class="btn btn-danger pull-right text-uppercase col-md-8" type="submit">Delete</button>
+                                        </form>
                                     </div>
                                 </div>
                             </section>

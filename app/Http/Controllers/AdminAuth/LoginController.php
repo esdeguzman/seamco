@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\AdminAuth;
 
+use App\Admin;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
 use Hesto\MultiAuth\Traits\LogsoutGuard;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -65,7 +67,23 @@ class LoginController extends Controller
         return 'username';
     }
 
+    protected function authenticated(Request $request, $user)
+    {
+        $this->guard()->user()->makeHistory('logged in');
+    }
+
     public function logoutToPath() {
         return url('admin/login');
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->user()->makeHistory('logged out');
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/');
     }
 }

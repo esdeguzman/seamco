@@ -29,7 +29,7 @@ class LoansController extends Controller
 
     public function index() {
         $member = Auth::guard('member')->user();
-        $loans = Loan::where('member_id', $member->id)->get();
+        $loans = Loan::where('member_id', $member->id)->where('deleted_at', null)->get(); // do not include soft deleted loans
 
         // get current max share
         $currentShare = Share::where('member_id', $member->id)->get()->last();
@@ -243,8 +243,22 @@ class LoansController extends Controller
 
     public function delete(Loan $loan, Request $request)
     {
+        $this->validate($request,
+            [
+                'remarks' => 'required|min:10'
+            ],
+            [
+                'remarks.required' => 'Please provide reason for deleting this loan.',
+                'remarks.min' => 'Please provide atleast 10 character explanation.'
+            ]
+        );
+
         if ($request->process == 'delete') {
-            $loan->forceDelete();
+            $memberName = $loan->member->full_name;
+            $loan->makeHistory("deleted loan of $memberName with remarks: $request->remarks");
+            $loan->remarks = $request->remarks;
+            $loan->save();
+            $loan->delete();
         }
 
         return redirect()->route('admin.loans-index', ['status' => $request->status]);

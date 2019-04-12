@@ -35,6 +35,8 @@ class CreateMembersTable extends Migration
             $table->string('password');
             $table->string('code')->nullable();
             $table->string('joined')->nullable();
+            $table->string('referred_by')->nullable();
+            $table->string('email')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
