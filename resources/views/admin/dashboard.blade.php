@@ -42,71 +42,107 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>New Applicants</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        @if($applicants->count() > 0)
-                            @foreach($applicants->sortByDesc('created_at') as $applicant)
-                            @if($applicant->application->approved === 0) @continue @endif
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">{{ \Carbon\Carbon::parse($applicant->created_at)->format('F') }}</p>
-                                    <p class="day">{{ \Carbon\Carbon::parse($applicant->created_at)->day }}</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="{{ route('admin.review-applicant', $applicant->id) }}">{{ $applicant->full_name }}</a>
-                                    <p>Contact Number: {{ $applicant->mobile_number }}</p>
-                                    <p>Position: {{ $applicant->position }}</p>
-                                </div>
-                            </article>
-                            @endforeach
-                        @endif
+                        <table id="datatable-buttons" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Fullname</th>
+                                <th>Contact Number</th>
+                                <th>Position</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+                            @if(! is_null($applicants))
+                                @foreach($applicants as $applicant)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($applicant->created_at)->toFormattedDateString() }}</td>
+                                    <td>{{ $applicant->full_name }}</td>
+                                    <td>{{ $applicant->mobile_number }}</td>
+                                    <td>{{ $applicant->position }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.review-applicant', $applicant->id) }}"><span class="fa fa-eye"></span> View</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>New Loan Applications</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                    @if($loanApplications->count() > 0)
-                        @foreach($loanApplications->sortByDesc('created_at') as $loanApplication)
-                            <article class="media event">
-                                <a class="pull-left date">
-                                    <p class="month">{{ \Carbon\Carbon::parse($loanApplication->created_at)->format('F') }}</p>
-                                    <p class="day">{{ \Carbon\Carbon::parse($loanApplication->created_at)->day }}</p>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="{{ route('admin.loan-show', $loanApplication->id) }}">{{ $loanApplication->member->full_name }}</a>
-                                    <p>Contact Number: {{ $loanApplication->member->mobile_number }}</p>
-                                    <p>Position: {{ $loanApplication->member->position }}</p>
-                                </div>
-                            </article>
-                        @endforeach
-                    @endif
+                    <table id="datatable-loans" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Fullname</th>
+                                <th>Contact Number</th>
+                                <th>Position</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+                            @if(! is_null($loanApplications))
+                                @foreach($loanApplications as $loanApplication)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($loanApplication->created_at)->toFormattedDateString() }}</td>
+                                    <td>{{ $loanApplication->member->full_name }}</td>
+                                    <td>{{ $loanApplication->member->mobile_number }}</td>
+                                    <td>{{ $loanApplication->member->position }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.loan-show', $loanApplication->id) }}"><span class="fa fa-eye"></span> View</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            {{--<div class="col-md-4">--}}
-                {{--<div class="x_panel">--}}
-                    {{--<div class="x_title">--}}
-                        {{--<h2>Top Profiles <small>Sessions</small></h2>--}}
-                        {{--<div class="clearfix"></div>--}}
-                    {{--</div>--}}
-                    {{--<div class="x_content">--}}
-                       {{----}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
         </div>
     </div>
 </div>
+@stop
+
+@section('scripts')
+    <!-- Datatables -->
+    <script src="{{ url('vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+    <script src="{{ url('vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
+    <script src="{{ url('vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
+    <script src="{{ url('vendors/jszip/dist/jszip.min.js') }}"></script>
+    <script src="{{ url('vendors/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ url('vendors/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script type="text/javascript">
+        $('#datatable-loans').DataTable()
+    </script>
 @stop

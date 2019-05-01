@@ -36,9 +36,7 @@ class AdminsController extends Controller
 
         $members = Member::whereHas('shares')->get();
         $applicants = Member::whereHas('application', function ($query) {
-            $query->where('fees_informed', null)
-                    ->orWhere('id_has_been_released', null)
-                    ->orWhere('share_cert_given', null);
+            $query->where('attendance_verified_by', null);
         })->get();
         $loanApplications = Loan::where('status',null)->get();
         $admins = Admin::all();
@@ -166,6 +164,9 @@ class AdminsController extends Controller
         // get all share payments
         $sharePayments = SharePayment::where('member_id', $member->id)->get();
 
+        //get applicantion details
+        $applicant = Member::find($member->id);
+
         // compute total share payments
         $totalSharePayments = -1000;
         foreach ($sharePayments as $sharePayment) {
@@ -194,7 +195,7 @@ class AdminsController extends Controller
 
         auth()->guard('admin')->user()->makeHistory("viewed profile of $member->full_name");
 
-        return view('admin.members.show', compact('member', 'savings', 'totalSharePayments', 'latestPromises', 'currentLoans'));
+        return view('admin.members.show', compact('member', 'savings', 'totalSharePayments', 'latestPromises', 'currentLoans', 'applicant'));
     }
 
     public function loansIndex(Request $request) {

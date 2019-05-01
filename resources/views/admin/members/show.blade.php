@@ -26,6 +26,8 @@
                                         </li>
                                         <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Loan Payments</a>
                                         </li>
+                                        <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab3" data-toggle="tab" aria-expanded="false">Application Events</a>
+                                        </li>
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
@@ -257,6 +259,71 @@
                                                 @endif
                                                 </tbody>
                                             </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
+                                            <form class="form-horizontal form-label-left" action="{{ route('applications.update', $applicant->id) }}" method="post">
+                                                {{ csrf_field() }} {{ method_field('put') }}
+
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                                    @if($applicant->application->approved == 1)
+                                                        <h4 class="text text-uppercase">member has been approved by : 
+                                                            @if($applicant->application->approvedBy)
+                                                                {{ $applicant->application->approvedBy->first_name }}
+                                                            @endif
+                                                        </h4>
+                                                    @elseif($applicant->application->approved === 0)
+                                                        <input class="btn btn-block btn-danger" value="DENIED BY: {{ $applicant->application->disapprovedBy->first_name .' '. $applicant->application->disapprovedBy->last_name }}" disabled>
+                                                    @else
+                                                        <input class="btn btn-block btn-primary" value="APPROVE APPLICATION" name="action" type="submit" {{ is_null($applicant->application->approved) ? '' : 'disabled' }} >
+                                                    @endif
+                                                    <br>
+                                                    @if(! is_null($applicant->application->attended_pmes))
+                                                        <h4 class="text text-uppercase">attendance verified by : {{ $applicant->application->attendanceVerifiedBy->first_name }}</h4>
+                                                    @else
+                                                        <input class="btn btn-block btn-primary" value="MARK AS PMES ATTENDEE" name="action" type="submit" {{ $applicant->application->approved ? '' : 'disabled' }}>
+                                                    @endif
+                                                    <br>
+                                                    @if(! is_null($applicant->application->fees_informed))
+                                                        <h4 class="text text-uppercase">informed about fees by : {{ $applicant->application->feesInformedBy->first_name }}</h4>
+                                                    @else
+                                                        <input class="btn btn-block btn-primary" value="APPLICANT INFORMED ABOUT FEES" name="action" type="submit" {{ count($applicant->shares) == 0 ? 'disabled' : '' }}>
+                                                    @endif
+                                                    <br>
+                                                    @if(! is_null($applicant->application->id_has_been_released))
+                                                        <h4 class="text text-uppercase">id issued by : {{ $applicant->application->idReleasedBy->first_name }}</h4>
+                                                    @else
+                                                        <input class="btn btn-block btn-primary" value="ID HAS BEEN RELEASED" name="action" type="submit" {{ count($applicant->shares) == 0 ? 'disabled' : '' }}/>
+                                                    @endif
+                                                    <br>
+                                                    @if(! is_null($applicant->application->share_cert_given))
+                                                        <h4 class="text text-uppercase">share certificate released by : {{ $applicant->application->shareCertReleasedBy->first_name }}</h4>
+                                                    @else
+                                                        <input class="btn btn-block btn-primary" value="SHARE CERTIFICATE GIVEN" name="action" type="submit" {{ count($applicant->shares) == 0 ? 'disabled' : '' }}/>
+                                                    @endif
+                                                </div>
+
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                                    <h4 class="text-danger">Referred By:</h1>
+                                                    <h5>{{ $member->referred_by or 'NONE' }}</h1>
+                                                    <hr>
+                                                    @if(is_null($applicant->application->approved))
+                                                        <textarea name="disapproval_reason" class="form-control" rows="2" {{ $applicant->application->approved ? 'disabled' : '' }} placeholder="Disapproval reason is required for the denial of an applicant"></textarea><br/>
+                                                        <button class="btn btn-block btn-danger">DISAPPROVE APPLICATION</button>
+                                                    @elseif($applicant->application->approved == 1)
+                                                        <h1>Application has already been approved!</h1>
+                                                    @else
+                                                        <h1 class="text-danger">Application has already been disapproved because of the following reason/s:</h1>
+                                                        <h1>{{ $applicant->application->disapproval_reason }}</h1>
+                                                    @endif
+                                                </div>
+
+                                                @if($applicant->application->attended_pmes && count($applicant->shares) == 0)
+                                                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-2 form-group">
+                                                    <input type="text" name="max_share" class="form-control money" /><br/>
+                                                    <button class="btn btn-block btn-success">SET MEMBER MAX SHARE</button>
+                                                </div>
+                                                @endif
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
