@@ -13,35 +13,32 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <h2>Denied Applicants</h2>
-                        <p class="text-muted font-13 m-b-30">
-                            The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
-                        </p>
                         <table id="datatable-buttons" class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Full Name</th>
                                 <th>Code</th>
-                                <th>Contact Number</th>
-                                <th>Email Address</th>
-                                <th>Address</th>
-                                <th>Employer</th>
+                                <th>Mobile Number</th>
+                                <th>Present Address</th>
+                                <th>Reason for Denial</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
 
 
                             <tbody>
+                            @foreach($members as $member)
                             <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>deguzman.esmeraldo@gmail.com</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
+                                <td>{{ $member->full_name }}</td>
+                                <td>{{ $member->code }}</td>
+                                <td>{{ $member->mobile_number }}</td>
+                                <td>{{ $member->present_address }}</td>
+                                <td>{{ $member->application->disapproval_reason }}</td>
                                 <td>
-                                    <a href="#"><span class="fa fa-eye"></span> View</a>
+                                    <a href="{{ route('admin.show-member', $member->id) }}"><span class="fa fa-eye"></span> View</a>
                                 </td>
                             </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

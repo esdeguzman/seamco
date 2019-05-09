@@ -36,7 +36,7 @@ class AdminsController extends Controller
 
         $members = Member::whereHas('shares')->get();
         $applicants = Member::whereHas('application', function ($query) {
-            $query->where('approved', null);
+            $query->where('attendance_verified_by', null);
         })->get();
         $loanApplications = Loan::where('status',null)->get();
         $admins = Admin::all();
@@ -150,11 +150,23 @@ class AdminsController extends Controller
     }
 
     public function approvedMembers() {
-        $members = Member::whereHas('shares')->get();
+        $members = Member::whereHas('application', function ($query) {
+            $query->where('approved', 1);
+        })->get();
 
         auth()->guard('admin')->user()->makeHistory('viewed approved members');
 
         return view('admin.members.approved', compact('members'));
+    }
+
+    public function deniedMembers() {
+        $members = Member::whereHas('application', function ($query) {
+            $query->where('approved', 0);
+        })->get();
+
+        auth()->guard('admin')->user()->makeHistory('viewed approved members');
+
+        return view('admin.members.denied', compact('members'));
     }
 
     public function showMember(Member $member) {

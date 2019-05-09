@@ -58,7 +58,7 @@
                             <li @yield('members')><a><i class="fa fa-users"></i> Members <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li @yield('approved-members')><a href="{{ route('admin.approved-members') }}">Approved</a></li>
-                                    <li @yield('denied-members')><a>Denied</a></li>
+                                    <li @yield('denied-members')><a href="{{ route('admin.denied-members') }}">Denied</a></li>
                                 </ul>
                             </li>
                             <li @yield('loans')><a><i class="fa fa-users"></i> Loans <span class="fa fa-chevron-down"></span></a>

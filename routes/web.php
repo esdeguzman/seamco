@@ -12,6 +12,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::put('/loans/{loan}/archive', 'LoansController@archive')->name('loans.archive');
     Route::post('/loan-payments/{loan}/{promise}', 'LoanPaymentsController@store')->name('loan-payments.store');
     Route::get('/approved-members', 'AdminsController@approvedMembers')->name('admin.approved-members');
+    Route::get('/denied-members', 'AdminsController@deniedMembers')->name('admin.denied-members');
     Route::get('/show-member/{member}', 'AdminsController@showMember')->name('admin.show-member');
     Route::post('/share-payment/{member}', 'SharePaymentsController@store')->name('admin.share-payment.store');
     Route::put('/update-member-share/{member}', 'SharesController@store')->name('share.store');
