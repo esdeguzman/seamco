@@ -36,7 +36,7 @@ class AdminsController extends Controller
 
         $members = Member::whereHas('shares')->get();
         $applicants = Member::whereHas('application', function ($query) {
-            $query->where('attendance_verified_by', null);
+            $query->where('approved', null);
         })->get();
         $loanApplications = Loan::where('status',null)->get();
         $admins = Admin::all();
