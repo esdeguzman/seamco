@@ -187,6 +187,7 @@
                                             </table>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                            @if(! is_null($latestPromises))
                                             @foreach($latestPromises as $latestPromise)
                                                 @foreach($currentLoans as $currentLoan)
                                                     @if($latestPromise->promissoryNote->loan->id == $currentLoan->id)
@@ -228,6 +229,7 @@
                                                     @endif
                                                 @endforeach
                                             @endforeach
+                                            @endif
 
                                             <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                                 <thead>
@@ -357,7 +359,11 @@
                                             <p class="title">Total Share Payments</p>
                                             <p>P {{ number_format($totalSharePayments, 2) }}</p>
                                             <p class="title">Share Amount</p>
-                                            <p>P {{ number_format($member->shares->last()->value, 2) }}</p>
+                                            <p>P 
+                                            @if($member->shares->last())
+                                            {{ number_format($member->shares->last()->value, 2) }}
+                                            @endif
+                                            </p>
                                             <p class="title">Current Savings</p>
                                             <p>P {{ number_format($savings, 2) }}</p>
                                             <p class="title">Username</p>

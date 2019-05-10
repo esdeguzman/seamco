@@ -171,38 +171,47 @@ class AdminsController extends Controller
 
     public function showMember(Member $member) {
         if ($member->application->approved == 1) {
-            // get current max share
-            $currentShare = Share::where('member_id', $member->id)->get()->last();
-
-            // get all share payments
-            $sharePayments = SharePayment::where('member_id', $member->id)->get();
-
             //get applicantion details
             $applicant = Member::find($member->id);
 
-            // compute total share payments
-            $totalSharePayments = -1000;
-            foreach ($sharePayments as $sharePayment) {
-                if(is_null($sharePayment->remarks)) {
-                    $totalSharePayments += $sharePayment->amount;
+            $currentShare = null;
+            $sharePayments = null;
+            $currentLoans = null;
+            $latestPromises = null;
+            $totalSharePayments = null;
+            $savings = null;
+
+            if ($member->share) {
+                // get current max share
+                $currentShare = Share::where('member_id', $member->id)->get()->last();
+
+                // get all share payments
+                $sharePayments = SharePayment::where('member_id', $member->id)->get();
+
+                // compute total share payments
+                $totalSharePayments = -1000;
+                foreach ($sharePayments as $sharePayment) {
+                    if(is_null($sharePayment->remarks)) {
+                        $totalSharePayments += $sharePayment->amount;
+                    }
                 }
-            }
 
-            $savings = $currentShare->value - $totalSharePayments;
+                $savings = $currentShare->value - $totalSharePayments;
 
-            $savings < 0 ? $savings = $savings * -1 : $savings = 0;
+                $savings < 0 ? $savings = $savings * -1 : $savings = 0;
 
-            $currentLoans = Loan::whereHas('promissoryNote', function($query) use ($member) {
-                $query->where('settled', 0)->where('remarks', null)
-                    ->where('member_id', $member->id)
-                    ->where('remarks', null);
-            })->orderByDesc('created_at')->get();
+                $currentLoans = Loan::whereHas('promissoryNote', function($query) use ($member) {
+                    $query->where('settled', 0)->where('remarks', null)
+                        ->where('member_id', $member->id)
+                        ->where('remarks', null);
+                })->orderByDesc('created_at')->get();
 
-            $latestPromises = [];
+                $latestPromises = [];
 
-            foreach($currentLoans as $currentLoan) {
-                if(! is_null($currentLoan)) {
-                $latestPromises[] = $currentLoan->promissoryNote->promises->where('carbonated_date', $currentLoan->promissoryNote->promises->where('status', 0)->min('carbonated_date'))->first();
+                foreach($currentLoans as $currentLoan) {
+                    if(! is_null($currentLoan)) {
+                    $latestPromises[] = $currentLoan->promissoryNote->promises->where('carbonated_date', $currentLoan->promissoryNote->promises->where('status', 0)->min('carbonated_date'))->first();
+                    }
                 }
             }
 
