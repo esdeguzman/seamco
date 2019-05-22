@@ -19,6 +19,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js"></script>
     <script src="https://unpkg.com/sweetalert2@7.0.10/dist/sweetalert2.all.js"></script>
     <script src="{{ url('css/fontawesome/fontawesome.min.css') }}"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-6429484135715885",
+              enable_page_level_ads: true
+         });
+    </script>
 </head>
 
 <body>
