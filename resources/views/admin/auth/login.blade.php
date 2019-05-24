@@ -20,13 +20,6 @@
 
     <!-- Custom Theme Style -->
     <link href={{ url('build/css/custom.min.css') }} rel="stylesheet">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-6429484135715885",
-              enable_page_level_ads: true
-         });
-    </script>
 </head>
 
 <body class="login">

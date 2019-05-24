@@ -81,23 +81,6 @@
                     </div>
                 </div>
                 <!-- /sidebar menu -->
-
-                <!-- /menu footer buttons -->
-                {{--<div class="sidebar-footer hidden-small">--}}
-                    {{--<a data-toggle="tooltip" data-placement="top" title="Settings">--}}
-                        {{--<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>--}}
-                    {{--</a>--}}
-                    {{--<a data-toggle="tooltip" data-placement="top" title="FullScreen">--}}
-                        {{--<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>--}}
-                    {{--</a>--}}
-                    {{--<a data-toggle="tooltip" data-placement="top" title="Lock">--}}
-                        {{--<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>--}}
-                    {{--</a>--}}
-                    {{--<a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">--}}
-                        {{--<span class="glyphicon glyphicon-off" aria-hidden="true"></span>--}}
-                    {{--</a>--}}
-                {{--</div>--}}
-                <!-- /menu footer buttons -->
             </div>
         </div>
 
@@ -116,7 +99,6 @@
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="javascript:;">Help</a></li>
                                 <li>
                                     <a onclick="logout()"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                                     <form id="logout" action="{{ url('/admin/logout') }}" method="post">{{ csrf_field() }}</form>
