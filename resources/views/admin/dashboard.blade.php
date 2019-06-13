@@ -84,6 +84,45 @@
             <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
+                        <h2>Approved Applicants</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <table id="datatable-approved-applicants" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Fullname</th>
+                                <th>Contact Number</th>
+                                <th>Position</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+                            @if(! is_null($approvedApplicants))
+                                @foreach($approvedApplicants as $approvedApplicant)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($approvedApplicant->created_at)->toFormattedDateString() }}</td>
+                                    <td>{{ $approvedApplicant->full_name }}</td>
+                                    <td>{{ $approvedApplicant->mobile_number }}</td>
+                                    <td>{{ $approvedApplicant->position }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.review-applicant', $approvedApplicant->id) }}"><span class="fa fa-eye"></span> View</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
                         <h2>New Loan Applications</h2>
                         <div class="clearfix"></div>
                     </div>
@@ -144,5 +183,6 @@
     <script src="{{ url('vendors/pdfmake/build/vfs_fonts.js') }}"></script>
     <script type="text/javascript">
         $('#datatable-loans').DataTable()
+        $('#datatable-approved-applicants').DataTable()
     </script>
 @stop

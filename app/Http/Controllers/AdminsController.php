@@ -40,8 +40,14 @@ class AdminsController extends Controller
         })->get();
         $loanApplications = Loan::where('status',null)->get();
         $admins = Admin::all();
+        $approvedApplicants = Member::whereHas('application', function ($query) {
+            $query
+                ->where('approved', 1)
+                ->where('disapproval_reason', null)
+                ->where('attendance_verified_by', null);
+        })->get();
 
-        return view('admin.dashboard', compact('members', 'applicants', 'loanApplications', 'admins'));
+        return view('admin.dashboard', compact('members', 'applicants', 'loanApplications', 'admins', 'approvedApplicants'));
     }
 
     public function show(Admin $admin) {
